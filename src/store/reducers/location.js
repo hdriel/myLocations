@@ -87,7 +87,7 @@ const stateManagement = (state = initialState, action) => {
 
         case DELETE_LOCATION_BY_CATEGORY: {
             const categoryId = action.categoryId;
-            const locationList = state.locationList.filter(location => location.category.id !== categoryId)
+            const locationList = state.locationList.filter(location => location.category !== categoryId)
 
             return {
                 ...state,

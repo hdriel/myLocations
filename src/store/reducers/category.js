@@ -26,18 +26,18 @@ const stateManagement = (state = initialState, action) => {
                 return state;
             }
 
-            const isLocationNameTaken = !!updatedCategoryList.find(cat =>
-                cat.id !== prevCategory.id // is not the same selected location
+            const isCategoryNameTaken = !!updatedCategoryList.find(cat =>
+                cat.id !== prevCategory.id // is not the same selected category
                 && cat.name === category.name // and his name is not already taken
             );
-            if(isLocationNameTaken){
+            if(isCategoryNameTaken){
                 return {
                     ...state,
                     error: `Category name ${category.name} is already taken`,
                 }
             }
 
-            updatedCategory.updateLocation(category);
+            updatedCategory.updateCategory(category);
 
             return {
                 ...state,
@@ -51,18 +51,18 @@ const stateManagement = (state = initialState, action) => {
 
             const { category } = action;
 
-            const isLocationExisted = updatedCategoryList.find(cat => cat.id === category.id);
-            if(isLocationExisted){
+            const isCategoryExisted = updatedCategoryList.find(cat => cat.id === category.id);
+            if(isCategoryExisted){
                 return state;
             }
 
             const isCategoryNameTaken = !!updatedCategoryList.find(loc =>
-                loc.name === location.name // the category name is not already taken
+                loc.name === category.name // the category name is not already taken
             );
             if(isCategoryNameTaken){
                 return {
                     ...state,
-                    error: `Category name ${location.name} is already taken`,
+                    error: `Category name ${category.name} is already taken`,
                 }
             }
 
