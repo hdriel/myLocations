@@ -1,14 +1,14 @@
 import './index.scss';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import CategoryDataTable from '../../components/categoryTabel';
 
 const Categories = props => {
-  const { categoryList } = useSelector(state => ({
-    categoryList: state.category?.categoryList ?? [],
-  }));
-
   return (
-    <div> {JSON.stringify(categoryList)} </div>
+      <div className='vertical-center'>
+        <div className='category-table-container'>
+          <CategoryDataTable/>
+        </div>
+      </div>
   );
 };
 

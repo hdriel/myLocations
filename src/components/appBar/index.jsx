@@ -1,5 +1,5 @@
 import './index.scss';
-import React from 'react';
+import React, {useEffect} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -8,20 +8,31 @@ import InputBase from '@material-ui/core/InputBase';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import SearchIcon from '@material-ui/icons/Search';
 import useStyles from './useStyle';
-import { useHistory } from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import * as settingsActions from "../../store/actions/settings";
 import {useSelector, useDispatch} from "react-redux";
 import _ from "lodash";
+import {TITLE_REPLACE_ACTION} from "../../utils/consts";
 
 
 const SearchAppBar = props => {
     const history = useHistory();
     const classes = useStyles();
     const dispatch  = useDispatch();
-    const { title, existsCategoryList } = useSelector(state => ({
-        title: state.settings?.title ?? [],
+    const { existsCategoryList, selectedCategory, selectedLocation } = useSelector(state => ({
         existsCategoryList: state.category?.categoryList?.length ?? 0,
+        selectedCategory: state.category?.selectedCategory,
+        selectedLocation: state.location?.selectedLocation,
     }));
+
+    let { title = '*' } = props;
+    const { categoryId, locationId } = useParams();
+    // console.table({categoryId, locationId});
+    const action = (locationId && selectedLocation) || (categoryId && selectedCategory)
+        ? 'Edit'
+        : 'New';
+
+    title = title.replace(TITLE_REPLACE_ACTION, action);
 
     const searchItemAvailable = !!props.search && existsCategoryList;
 

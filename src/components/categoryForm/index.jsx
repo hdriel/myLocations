@@ -1,5 +1,5 @@
-import './index.sass';
-import React , { useReducer } from 'react';
+import './index.scss';
+import React, {useEffect, useReducer} from 'react';
 import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
 import { useSelector, useDispatch } from 'react-redux';
 import {Category} from "../../models/category";
@@ -7,19 +7,37 @@ import {CATEGORY_ACTIONS} from "../../utils/consts";
 import useStyle from "./useStyle";
 import * as categoryActions from "../../store/actions/category";
 import { useHistory, useParams } from "react-router-dom";
+import { uid } from 'uid';
+
 
 const CategoryForm = props => {
     const history = useHistory();
     const classes = useStyle();
     const dispatch = useDispatch();
     const { categoryId } = useParams();
-    const { selectedCategory, selectedAction } = useSelector(state => ({
-        selectedCategory: state.category?.selectedCategory ?? new Category({id: '', name: ''}),
-        selectedAction: state.settings?.selectedAction,
+    const { selectedCategory, selectedAction, categoryList } = useSelector(state => ({
+        categoryList: state.category?.categoryList,
+        selectedCategory: state.category?.selectedCategory,
+        selectedAction: state.settings?.selectedAction ?? CATEGORY_ACTIONS.CREATE,
     }));
+
+    useEffect(() => {
+        if(!selectedCategory){
+            let category;
+            if(categoryId && categoryId === 'new'){
+                category = new Category({id: uid(), name: ''})
+            }
+            else {
+                category = categoryList.find(cat => cat.id === categoryId);
+            }
+            dispatch(categoryActions.selectCategory(category))
+        }
+    }, [selectedCategory, categoryId, dispatch])
+
     let formTitle;
     let formDescriptionTitle;
     let eventHandler;
+
     switch(selectedAction) {
         case CATEGORY_ACTIONS.CREATE:
             formTitle = 'NEW CATEGORY';
@@ -36,16 +54,16 @@ const CategoryForm = props => {
     const [formInput, setFormInput] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
         {
-            name: selectedCategory.name,
+            name: selectedCategory?.name,
         }
     );
 
     const handleSubmit = evt => {
         evt.preventDefault();
         if(eventHandler){
-            const data = { formInput };
-            const updatedCategory = new Category({id: 'test', name: data.formInput.name})
-            dispatch(eventHandler(updatedCategory));
+            const { name } = formInput;
+            selectedCategory.name = name;
+            dispatch(eventHandler(selectedCategory));
             history.goBack();
         }
     };
@@ -55,6 +73,10 @@ const CategoryForm = props => {
         const newValue = evt.target.value;
         setFormInput({ [name]: newValue });
     };
+
+    if(!selectedCategory){
+        return null;
+    }
 
     return (
         <div>
@@ -79,7 +101,6 @@ const CategoryForm = props => {
                         className={classes.button}
                     >Save</Button>
                     <Button
-                        type="submit"
                         variant="contained"
                         color="secondary"
                         className={classes.button}

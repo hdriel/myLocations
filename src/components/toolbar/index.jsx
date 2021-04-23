@@ -1,4 +1,4 @@
-import './index.sass';
+import './index.scss';
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -20,126 +20,136 @@ import * as settingsActions from "../../store/actions/settings";
 const ToolbarActions = props => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const history = useHistory();
     const {
+        selectedCrudAction,
+        selectedAction,
         selectedLocation,
         selectedCategory,
-        selectedCrudAction,
-        selectedSection
     } = useSelector(state => ({
         selectedAction: state.settings?.selectedAction,
-        selectedSection: state.settings?.selectedSection,
         selectedCrudAction: state.settings?.selectedCrudAction,
         selectedLocation: state.location?.selectedLocation,
         selectedCategory: state.category?.selectedCategory,
     }));
-    const history = useHistory();
 
-    const createHandler = () => {
-        switch (selectedSection) {
-            case CATEGORY_SECTION:
+    const {
+        section,
+        allowedActions: {
+            create: allowedCreateActions = false,
+            edit: allowedUpdateActions = false,
+            view: allowedViewActions = false,
+            delete: allowedDeleteActions = false,
+        } = {
+            create: false,
+            edit: false,
+            view: false,
+            delete: false,
+        }
+    } = props
+
+    const sectionHandler = {
+        [CATEGORY_SECTION]: {
+            createHandler() {
                 dispatch(settingsActions.updateSelectionAction({
                     selectedAction: CATEGORY_ACTIONS.CREATE,
                     selectedCrudAction: CRUD_ACTIONS.CREATE,
                 }));
                 history.push(EDIT_CATEGORY());
-                // window.location.reload();
-                break;
-            case LOCATION_SECTION:
-                dispatch(settingsActions.updateSelectionAction({
-                    selectedAction: LOCATION_ACTIONS.CREATE,
-                    selectedCrudAction: CRUD_ACTIONS.CREATE,
-                }));
-                history.push(EDIT_LOCATION());
-                // window.location.reload();
-                break;
-            default: break;
-        }
-    }
-
-    const viewHandler = () => {
-        switch (selectedSection) {
-            case CATEGORY_SECTION:
+            },
+            viewHandler(){
                 history.push(LOCATIONS_BY_CATEGORY(selectedCategory?.id));
-                break;
-            case LOCATION_SECTION:
-                dispatch(settingsActions.updateSelectionAction({
-                    selectedAction: LOCATION_ACTIONS.UPDATE,
-                    selectedCrudAction: CRUD_ACTIONS.VIEW,
-                }));
-                history.push(EDIT_LOCATION(selectedLocation?.id));
-                break;
-            default: break;
-        }
-    }
-
-    const editHandler = () => {
-        switch (selectedSection) {
-            case CATEGORY_SECTION:
+            },
+            editHandler(){
                 dispatch(settingsActions.updateSelectionAction({
                     selectedAction: LOCATION_ACTIONS.UPDATE,
                     selectedCrudAction: CRUD_ACTIONS.VIEW,
                 }));
                 history.push(EDIT_CATEGORY(selectedCategory?.id));
-                break;
-            case LOCATION_SECTION:
+            },
+            deleteHandler(){
+                dispatch(categoryActions.deleteCategory(selectedCategory?.id));
+            }
+        },
+        [LOCATION_SECTION]: {
+            createHandler() {
+                dispatch(settingsActions.updateSelectionAction({
+                    selectedAction: LOCATION_ACTIONS.CREATE,
+                    selectedCrudAction: CRUD_ACTIONS.CREATE,
+                }));
+                history.push(EDIT_LOCATION());
+            },
+            viewHandler(){
                 dispatch(settingsActions.updateSelectionAction({
                     selectedAction: LOCATION_ACTIONS.UPDATE,
                     selectedCrudAction: CRUD_ACTIONS.VIEW,
                 }));
                 history.push(EDIT_LOCATION(selectedLocation?.id));
-                break;
-            default: break;
+            },
+            editHandler(){
+                dispatch(settingsActions.updateSelectionAction({
+                    selectedAction: LOCATION_ACTIONS.UPDATE,
+                    selectedCrudAction: CRUD_ACTIONS.VIEW,
+                }));
+                history.push(EDIT_LOCATION(selectedLocation?.id));
+            },
+            deleteHandler(){
+                dispatch(locationActions.deleteLocation(selectedLocation?.id));
+            }
         }
     }
 
-    const deleteHandler = () => {
-        switch (selectedSection) {
-            case CATEGORY_SECTION:
-                dispatch(categoryActions.deleteCategory(selectedCategory?.id));
-                break;
-            case LOCATION_SECTION:
-                dispatch(locationActions.deleteLocation(selectedLocation?.id));
-                break;
-            default: break;
-        }
-    }
+    const createHandler = sectionHandler[section]?.createHandler;
+    const viewHandler = sectionHandler[section]?.viewHandler;
+    const editHandler = sectionHandler[section]?.editHandler;
+    const deleteHandler = sectionHandler[section]?.deleteHandler;
+
+    const createSelectedStyle = selectedCrudAction === CRUD_ACTIONS.CREATE ? 'contained' : 'outlined';
+    const viewSelectedStyle = selectedCrudAction === CRUD_ACTIONS.VIEW ? 'contained' : 'outlined';
+    const editSelectedStyle = selectedCrudAction === CRUD_ACTIONS.UPDATE ? 'contained' : 'outlined';
+    const deleteSelectedStyle = selectedCrudAction === CRUD_ACTIONS.DELETE ? 'contained' : 'outlined';
 
     return (
         <Card className={classes.root}>
             <CardContent>
                 <span className={classes.title}>Available Actions: </span>
+
                 <Button
-                    variant="outlined"
+                    variant={createSelectedStyle}
                     color="default"
                     className={classes.button}
                     startIcon={<AddCircleOutlineIcon />}
-                    // disabled={true}
+                    disabled={!allowedCreateActions}
                     onClick={createHandler}
                 > <span className={classes.text}>Create</span> </Button>
 
                 <Button
-                    variant="outlined"
+                    variant={viewSelectedStyle}
                     color="default"
                     className={classes.button}
                     startIcon={<ImportContactsIcon />}
                     onClick={viewHandler}
+                    disabled={!allowedViewActions}
                 > <span className={classes.text}>View</span> </Button>
 
                 <Button
-                    variant="outlined"
+                    variant={editSelectedStyle}
                     color="default"
                     className={classes.button}
                     startIcon={<EditIcon />}
                     onClick={editHandler}
+                    disabled={!allowedUpdateActions}
                 > <span className={classes.text}>Edit</span> </Button>
 
                 <Button
-                    variant="outlined"
+                    variant={deleteSelectedStyle}
                     color="default"
                     className={classes.button}
                     startIcon={<DeleteIcon />}
                     onClick={deleteHandler}
+                    disabled={!allowedDeleteActions}
                 > <span className={classes.text}>Delete</span> </Button>
+
             </CardContent>
         </Card>
     );
