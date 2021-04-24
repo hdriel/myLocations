@@ -1,12 +1,12 @@
 import './index.scss';
 import React from 'react';
-import CategoryDataTable from '../../components/categoryTabel';
+import CategoryList from '../../components/CategoryList';
 
 const Categories = props => {
   return (
       <div className='vertical-center'>
         <div className='category-table-container'>
-          <CategoryDataTable/>
+          <CategoryList/>
         </div>
       </div>
   );

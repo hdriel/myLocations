@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export default makeStyles({
     root: {
         borderRadius: '10px',
-        width: 'max-content',
+        width: '700px',
         marginTop: '20px',
         paddingTop: '10px'
     },

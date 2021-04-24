@@ -1,5 +1,5 @@
 import './index.scss';
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -41,13 +41,14 @@ const SearchAppBar = props => {
         history.goBack();
     }
 
-    const updateSearchValue = (event) => {
+    const [reload, setReload] = useState(false);
+    const callApi = (event) => {
         const { target: { value } } = event;
-        _.debounce(
-            () => dispatch(settingsActions.updateSearchItemValue(value)),
-            2*1000
-        );
-    }
+        console.log('search for: ', value);
+        dispatch(settingsActions.updateSearchItemValue(value))
+        setReload(true);
+    };
+    const [updateSearchValue] = useState(() => _.debounce(callApi, 1000));
 
     return (
         <div className={classes.root}>
