@@ -15,6 +15,8 @@ import { EDIT_CATEGORY, EDIT_LOCATION, LOCATIONS_BY_CATEGORY } from "../../scree
 import * as locationActions from "../../store/actions/location";
 import * as categoryActions from "../../store/actions/category";
 import * as settingsActions from "../../store/actions/settings";
+import {Category} from "../../models/category";
+import {uid} from "uid";
 
 
 const ToolbarActions = props => {
@@ -23,11 +25,9 @@ const ToolbarActions = props => {
     const history = useHistory();
     const {
         selectedCrudAction,
-        selectedAction,
         selectedLocation,
         selectedCategory,
     } = useSelector(state => ({
-        selectedAction: state.settings?.selectedAction,
         selectedCrudAction: state.settings?.selectedCrudAction,
         selectedLocation: state.location?.selectedLocation,
         selectedCategory: state.category?.selectedCategory,
@@ -55,17 +55,20 @@ const ToolbarActions = props => {
                     selectedAction: CATEGORY_ACTIONS.CREATE,
                     selectedCrudAction: CRUD_ACTIONS.CREATE,
                 }));
+                dispatch(categoryActions.selectCategory(new Category({id: uid(), name: ''})));
                 history.push(EDIT_CATEGORY());
+            },
+            editHandler(){
+                if(selectedCategory){
+                    dispatch(settingsActions.updateSelectionAction({
+                        selectedAction: CATEGORY_ACTIONS.UPDATE,
+                        selectedCrudAction: CATEGORY_ACTIONS.UPDATE,
+                    }));
+                    history.push(EDIT_CATEGORY(selectedCategory.id));
+                }
             },
             viewHandler(){
                 history.push(LOCATIONS_BY_CATEGORY(selectedCategory?.id));
-            },
-            editHandler(){
-                dispatch(settingsActions.updateSelectionAction({
-                    selectedAction: LOCATION_ACTIONS.UPDATE,
-                    selectedCrudAction: CRUD_ACTIONS.VIEW,
-                }));
-                history.push(EDIT_CATEGORY(selectedCategory?.id));
             },
             deleteHandler(){
                 dispatch(categoryActions.deleteCategory(selectedCategory?.id));

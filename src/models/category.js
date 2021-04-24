@@ -1,27 +1,23 @@
 export class Category{
     constructor({id, name, doc}) {
         if(doc){
-            this._updateCategoryFromObj(doc);
+            this.updateCategoryFromObj(doc);
         }
         else{
-            this._id = id;
+            this.id = id;
             this.name = name;
         }
     }
 
-    get id(){
-        return this._id;
-    }
-
-    _updateCategoryFromObj(category){
-        const { _id, name } = category;
-        this._id = _id;
+    updateCategoryFromObj(category){
+        const { id, name } = category;
+        this.id = id;
         this.name = name;
     }
 
     toString(){
         return JSON.stringify({
-            id: this._id,
+            id: this.id,
             name: this.name,
         })
     }

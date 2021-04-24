@@ -11,17 +11,17 @@ import {RESTORE_FROM_PERSIST_DATA} from "../../utils/consts";
 
 const initialState = {
     categoryList: [],
-    selectedCategory: undefined,
+    selectedCategory: null,
 };
 
 const stateManagement = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_CATEGORY: {
             console.log(`FIRED: ${action.type}`);
-            const updatedCategoryList = state.categoryList.slice(0);
+            const updatedCategoryList = state.categoryList.map(category => new Category({doc: category}));
 
             const { category } = action;
-            const prevCategory = state.selectedCategory;
+            const prevCategory = new Category({doc: state.selectedCategory});
 
             const updatedCategory = updatedCategoryList.find(cat => cat.id === prevCategory.id);
             if(!updatedCategory){
@@ -39,12 +39,13 @@ const stateManagement = (state = initialState, action) => {
                 }
             }
 
-            updatedCategory.updateCategory(category);
+            updatedCategory.updateCategoryFromObj(category);
 
             return {
                 ...state,
                 categoryList: updatedCategoryList,
-                selectedCategory: undefined,
+                selectedCategory: null,
+                error: '',
             };
         }
 
@@ -75,7 +76,7 @@ const stateManagement = (state = initialState, action) => {
             return {
                 ...state,
                 categoryList: updatedCategoryList,
-                selectedCategory: undefined,
+                selectedCategory: null,
             }
 
         case DELETE_CATEGORY: {
@@ -85,7 +86,7 @@ const stateManagement = (state = initialState, action) => {
             return {
                 ...state,
                 categoryList,
-                selectedCategory: undefined,
+                selectedCategory: null,
             }
         }
 
@@ -94,13 +95,15 @@ const stateManagement = (state = initialState, action) => {
             console.log(`FIRED: ${action.type}`);
             return {
                 ...state,
-                selectedCategory: action.category,
+                selectedCategory: action.category || null,
+                error: '',
             }
 
 
         case RESET_CATEGORY_ERROR:
         case UPDATE_CATEGORY_ERROR:
             console.log(`FIRED: ${action.type}`);
+            debugger
             const { error = ''} = action;
             return {
                 ...state,
@@ -120,16 +123,10 @@ const stateManagement = (state = initialState, action) => {
                 return category;
             })
 
-            /*
-            if(selectedCategory && !(selectedCategory instanceof Category)){
-                selectedCategory = new Category({doc: selectedCategory});
-            }
-            */
-
             return {
                 ...state,
                 categoryList,
-                selectedCategory: undefined,
+                selectedCategory: null,
             };
 
         default:

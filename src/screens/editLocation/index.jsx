@@ -7,7 +7,7 @@ import {CATEGORIES} from "../index";
 const EditLocation = props => {
   const history = useHistory();
 
-  const { locationList, selectedCategory } = useSelector(state => ({
+  const { selectedCategory } = useSelector(state => ({
     locationList: state.location?.locationList ?? [],
     selectedCategory: state.category?.selectedCategory,
   }));

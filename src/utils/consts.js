@@ -3,6 +3,7 @@ export const CRUD_ACTIONS = {
     UPDATE: 'EDIT',
     VIEW: 'VIEW',
     DELETE: 'DELETE',
+    NONE: '',
 }
 
 const CRUD_ACTIONS_SECTION = (section) => ({

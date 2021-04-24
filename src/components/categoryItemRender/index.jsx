@@ -3,7 +3,6 @@ import React, {useState, useEffect} from 'react';
 import * as categoryActions from '../../store/actions/category';
 import Checkbox from '@material-ui/core/Checkbox';
 import { useDispatch } from 'react-redux';
-import {Category} from "../../models/category";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 
@@ -15,7 +14,7 @@ const CategoryItemRender = (props) => {
     const [isSelected, setIsSelected] = useState(selected);
 
     const onSelectHandler = () => {
-        dispatch(categoryActions.selectCategory(isSelected ? undefined : new Category({doc: category})));
+        dispatch(categoryActions.selectCategory(isSelected ? undefined : category));
         setIsSelected(value => !value);
     }
 

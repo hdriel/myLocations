@@ -8,11 +8,13 @@ import InputBase from '@material-ui/core/InputBase';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import SearchIcon from '@material-ui/icons/Search';
 import useStyles from './useStyle';
-import {useHistory, useParams} from "react-router-dom";
+import {useHistory, useParams, useLocation} from "react-router-dom";
 import * as settingsActions from "../../store/actions/settings";
+import * as categoryActions from "../../store/actions/category";
 import {useSelector, useDispatch} from "react-redux";
 import _ from "lodash";
-import {TITLE_REPLACE_ACTION} from "../../utils/consts";
+import {CRUD_ACTIONS, TITLE_REPLACE_ACTION} from "../../utils/consts";
+import {CATEGORIES} from "../../screens";
 
 
 const SearchAppBar = props => {
@@ -28,7 +30,7 @@ const SearchAppBar = props => {
     let { title = '*' } = props;
     const { categoryId, locationId } = useParams();
     // console.table({categoryId, locationId});
-    const action = (locationId && selectedLocation) || (categoryId && selectedCategory)
+    const action = (locationId !== 'new' && selectedLocation) || (categoryId !== 'new' && selectedCategory)
         ? 'Edit'
         : 'New';
 
@@ -38,6 +40,11 @@ const SearchAppBar = props => {
 
     const goBackPage = () => {
         dispatch(settingsActions.updateSearchItemValue(''));
+        dispatch(categoryActions.selectCategory(null));
+        dispatch(settingsActions.updateSelectionAction({
+            selectedAction: CRUD_ACTIONS.NONE,
+            selectedCrudAction: CRUD_ACTIONS.NONE,
+        }));
         history.goBack();
     }
 
@@ -50,12 +57,15 @@ const SearchAppBar = props => {
     };
     const [updateSearchValue] = useState(() => _.debounce(callApi, 1000));
 
+    const { pathname } = useLocation();
+    const mainRoute = [CATEGORIES].includes(pathname.replace('^\/', ''))
+
     return (
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
                     {
-                        history.length > 1 && (
+                        !mainRoute && (
                             <IconButton
                                 edge="start"
                                 className={classes.menuButton}
@@ -69,7 +79,7 @@ const SearchAppBar = props => {
                     }
                     <Typography className={classes.title} variant="h6" noWrap> { title } </Typography>
                     {
-                        searchItemAvailable && (
+                        !!searchItemAvailable && (
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon />

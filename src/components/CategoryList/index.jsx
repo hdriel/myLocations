@@ -1,5 +1,5 @@
 import './index.scss';
-import React , {useState, useEffect} from 'react';
+import React  from 'react';
 import {useSelector} from 'react-redux';
 import {Category} from "../../models/category";
 import CategoryItemRender from "../categoryItemRender";
@@ -12,7 +12,7 @@ const CategoryList = () => {
         selectedCategory: state.category?.selectedCategory ?? [],
         searchValue: state.settings?.searchValue ?? '',
     }));
-    const selectedCategoryId = selectedCategory && (selectedCategory?.id || selectedCategory?._id);
+    const selectedCategoryId = selectedCategory?.id;
 
     const categoryItemsList = categoryList
         .map(category => {

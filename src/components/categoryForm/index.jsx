@@ -1,13 +1,14 @@
 import './index.scss';
 import React, {useEffect, useReducer} from 'react';
-import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
+import { Button, TextField, Paper, Typography } from "@material-ui/core";
 import { useSelector, useDispatch } from 'react-redux';
-import {Category} from "../../models/category";
-import {CATEGORY_ACTIONS} from "../../utils/consts";
+import {CATEGORY_ACTIONS, CRUD_ACTIONS} from "../../utils/consts";
 import useStyle from "./useStyle";
 import * as categoryActions from "../../store/actions/category";
+import * as settingsActions from "../../store/actions/settings";
 import { useHistory, useParams } from "react-router-dom";
-import { uid } from 'uid';
+import {CATEGORIES} from "../../screens";
+import {Category} from "../../models/category";
 
 
 const CategoryForm = props => {
@@ -15,23 +16,15 @@ const CategoryForm = props => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const { categoryId } = useParams();
-    const { selectedCategory, selectedAction, categoryList } = useSelector(state => ({
-        categoryList: state.category?.categoryList,
+    const { selectedCategory, selectedAction } = useSelector(state => ({
         selectedCategory: state.category?.selectedCategory,
         selectedAction: state.settings?.selectedAction ?? CATEGORY_ACTIONS.CREATE,
     }));
 
+    const updatedCategory = selectedCategory && new Category({doc: selectedCategory});
+
     useEffect(() => {
-        if(!selectedCategory){
-            let category;
-            if(categoryId && categoryId === 'new'){
-                category = new Category({id: uid(), name: ''})
-            }
-            else {
-                category = categoryList.find(cat => cat.id === categoryId);
-            }
-            dispatch(categoryActions.selectCategory(category))
-        }
+        if(!selectedCategory) history.replace(CATEGORIES);
     }, [selectedCategory, categoryId, dispatch])
 
     let formTitle;
@@ -47,26 +40,16 @@ const CategoryForm = props => {
 
         case CATEGORY_ACTIONS.UPDATE:
             formTitle = 'UPDATE CATEGORY';
-            formDescriptionTitle = `Fill form to update '${selectedCategory.name}' category`;
+            formDescriptionTitle = `Fill form to update '${updatedCategory.name}' category`;
             eventHandler = categoryActions.updateCategory;
             break;
     }
     const [formInput, setFormInput] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
         {
-            name: selectedCategory?.name,
+            name: updatedCategory?.name ?? '',
         }
     );
-
-    const handleSubmit = evt => {
-        evt.preventDefault();
-        if(eventHandler){
-            const { name } = formInput;
-            selectedCategory.name = name;
-            dispatch(eventHandler(selectedCategory));
-            history.goBack();
-        }
-    };
 
     const handleInput = evt => {
         const name = evt.target.name;
@@ -74,9 +57,30 @@ const CategoryForm = props => {
         setFormInput({ [name]: newValue });
     };
 
-    if(!selectedCategory){
-        return null;
-    }
+
+    const submitHandler = evt => {
+        evt.preventDefault();
+        if(eventHandler){
+            updatedCategory.name = formInput.name;
+            dispatch(eventHandler(updatedCategory));
+            categoryActions.selectCategory(null);
+            dispatch(settingsActions.updateSelectionAction({
+                selectedAction: CRUD_ACTIONS.NONE,
+                selectedCrudAction: CRUD_ACTIONS.NONE,
+            }));
+            history.replace(CATEGORIES);
+        }
+    };
+
+    const cancelHandler = evt => {
+        evt.preventDefault();
+        dispatch(categoryActions.selectCategory(null));
+        dispatch(settingsActions.updateSelectionAction({
+            selectedAction: CRUD_ACTIONS.NONE,
+            selectedCrudAction: CRUD_ACTIONS.NONE,
+        }));
+        history.replace(CATEGORIES);
+    };
 
     return (
         <div>
@@ -84,12 +88,13 @@ const CategoryForm = props => {
                 <Typography variant="h5" component="h3"> { formTitle } </Typography>
                 <Typography component="p"> { formDescriptionTitle } </Typography>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={submitHandler}>
                     <TextField
                         label="Name"
                         id="margin-normal"
                         name="name"
-                        defaultValue={formInput.email}
+                        defaultValue={formInput.name}
+                        required={true}
                         className={classes.textField}
                         helperText="Enter your category name"
                         onChange={handleInput}
@@ -104,6 +109,7 @@ const CategoryForm = props => {
                         variant="contained"
                         color="secondary"
                         className={classes.button}
+                        onClick={cancelHandler}
                     >Cancel</Button>
                 </form>
             </Paper>
