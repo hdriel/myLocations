@@ -5,12 +5,23 @@ import ToolbarActions from "../../components/toolbar";
 
 
 const Screen = props => {
-    const { search, section, title, allowedActions } = props;
+    const {
+        search,
+        section,
+        title,
+        allowedActions,
+        barColor,
+        searchPlaceholder,
+    } = props;
+
+    const searchAppBarProps = { search, title, barColor, searchPlaceholder };
+    const toolbarActionsProps = { section, allowedActions };
+
     return (
         <>
-            <SearchAppBar search={search} title={title}/>
+            <SearchAppBar {...searchAppBarProps}/>
             <div className={'vertical-center'}>
-                <ToolbarActions section={section} allowedActions={allowedActions}/>
+                <ToolbarActions {...toolbarActionsProps}/>
             </div>
             { props.children }
         </>

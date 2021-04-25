@@ -1,0 +1,13 @@
+.location-form-row-container{
+  button {
+    &:last-child{
+      margin-right: -7px;
+    }
+
+    flex: 1
+  }
+
+  div:last-child{
+    margin-right: -7px;
+  }
+}

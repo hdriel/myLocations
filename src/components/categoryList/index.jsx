@@ -9,7 +9,7 @@ const CategoryList = () => {
     const { categoryList, locationList, selectedCategory, searchValue } = useSelector(state => ({
         locationList: state.location?.locationList ?? [],
         categoryList: state.category?.categoryList ?? [],
-        selectedCategory: state.category?.selectedCategory ?? [],
+        selectedCategory: state.category?.selectedCategory ?? null,
         searchValue: state.settings?.searchValue ?? '',
     }));
     const selectedCategoryId = selectedCategory?.id;
@@ -19,8 +19,9 @@ const CategoryList = () => {
             if(!(category instanceof Category)){
                 category = new Category({doc: category});
             }
+
             category.locations = locationList
-                .filter(location => location.category === category.id)
+                .filter(location => location.categoryId === category.id)
                 .length;
 
             category.selected = category.id === selectedCategoryId

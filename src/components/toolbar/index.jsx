@@ -17,6 +17,7 @@ import * as categoryActions from "../../store/actions/category";
 import * as settingsActions from "../../store/actions/settings";
 import {Category} from "../../models/category";
 import {uid} from "uid";
+import {Location} from "../../models/location";
 
 
 const ToolbarActions = props => {
@@ -62,7 +63,7 @@ const ToolbarActions = props => {
                 if(selectedCategory){
                     dispatch(settingsActions.updateSelectionAction({
                         selectedAction: CATEGORY_ACTIONS.UPDATE,
-                        selectedCrudAction: CATEGORY_ACTIONS.UPDATE,
+                        selectedCrudAction: CRUD_ACTIONS.UPDATE,
                     }));
                     history.push(EDIT_CATEGORY(selectedCategory.id));
                 }
@@ -80,21 +81,26 @@ const ToolbarActions = props => {
                     selectedAction: LOCATION_ACTIONS.CREATE,
                     selectedCrudAction: CRUD_ACTIONS.CREATE,
                 }));
+                dispatch(locationActions.selectLocation(new Location({id: uid()})));
                 history.push(EDIT_LOCATION());
             },
-            viewHandler(){
-                dispatch(settingsActions.updateSelectionAction({
-                    selectedAction: LOCATION_ACTIONS.UPDATE,
-                    selectedCrudAction: CRUD_ACTIONS.VIEW,
-                }));
-                history.push(EDIT_LOCATION(selectedLocation?.id));
-            },
             editHandler(){
-                dispatch(settingsActions.updateSelectionAction({
-                    selectedAction: LOCATION_ACTIONS.UPDATE,
-                    selectedCrudAction: CRUD_ACTIONS.VIEW,
-                }));
-                history.push(EDIT_LOCATION(selectedLocation?.id));
+                if(selectedLocation){
+                    dispatch(settingsActions.updateSelectionAction({
+                        selectedAction: LOCATION_ACTIONS.UPDATE,
+                        selectedCrudAction: CRUD_ACTIONS.UPDATE,
+                    }));
+                    history.push(EDIT_LOCATION(selectedLocation?.id));
+                }
+            },
+            viewHandler(){
+                if(selectedLocation){
+                    dispatch(settingsActions.updateSelectionAction({
+                        selectedAction: LOCATION_ACTIONS.VIEW,
+                        selectedCrudAction: CRUD_ACTIONS.VIEW,
+                    }));
+                    history.push(EDIT_LOCATION(selectedLocation?.id));
+                }
             },
             deleteHandler(){
                 dispatch(locationActions.deleteLocation(selectedLocation?.id));

@@ -26,5 +26,18 @@ export default makeStyles(theme => ({
     textField: {
         margin: theme.spacing(2,1,1,1),
         width: 400
+    },
+    row: {
+        width: 400,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    rowItem: {
+        flex: 1,
+        width: 'auth'
+    },
+    textFieldRow: {
+        margin: theme.spacing(2,0,1,1),
     }
 }));

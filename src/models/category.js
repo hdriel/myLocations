@@ -1,7 +1,7 @@
 export class Category{
     constructor({id, name, doc}) {
         if(doc){
-            this.updateCategoryFromObj(doc);
+            this.updateFromObj(doc);
         }
         else{
             this.id = id;
@@ -9,7 +9,7 @@ export class Category{
         }
     }
 
-    updateCategoryFromObj(category){
+    updateFromObj(category){
         const { id, name } = category;
         this.id = id;
         this.name = name;

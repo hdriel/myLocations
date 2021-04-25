@@ -1,0 +1,13 @@
+.category-form-row-container{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+
+  button {
+    &:last-child{
+      margin-right: 8px;
+    }
+
+    flex: 1
+  }
+}

@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import SearchIcon from '@material-ui/icons/Search';
 import useStyles from './useStyle';
 import {useHistory, useParams, useLocation} from "react-router-dom";
@@ -15,7 +16,6 @@ import {useSelector, useDispatch} from "react-redux";
 import _ from "lodash";
 import {CRUD_ACTIONS, TITLE_REPLACE_ACTION, TITLE_REPLACE_CATEGORY} from "../../utils/consts";
 import {CATEGORIES} from "../../screens";
-
 
 const SearchAppBar = props => {
     const history = useHistory();
@@ -39,7 +39,7 @@ const SearchAppBar = props => {
     }
 
     const { pathname } = useLocation();
-    const locationUrl = pathname.replace('^\/', '');
+    const locationUrl = pathname.replace('^/', '');
     const mainRoute = locationUrl === CATEGORIES;
 
     // Title Configuration
@@ -63,10 +63,14 @@ const SearchAppBar = props => {
     };
     const [updateSearchValue] = useState(() => _.debounce(callApi, 1000));
 
+    const clearLocalStorageDataHandler = () => {
+        localStorage.clear();
+        window.location.reload(false);
+    }
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" style={{backgroundColor: props.barColor}}>
                 <Toolbar>
                     {
                         !mainRoute && (
@@ -89,7 +93,7 @@ const SearchAppBar = props => {
                                     <SearchIcon />
                                 </div>
                                 <InputBase
-                                    placeholder="Search category"
+                                    placeholder={props.searchPlaceholder || 'search'}
                                     classes={{
                                         root: classes.inputRoot,
                                         input: classes.inputInput,
@@ -100,6 +104,15 @@ const SearchAppBar = props => {
                             </div>
                         )
                     }
+
+                    <div
+                        className={classes.deleteCache}
+                        title='Press double click to clear you local storage'
+                    >
+                        <DeleteForeverIcon
+                            onDoubleClick={clearLocalStorageDataHandler}
+                        />
+                    </div>
                 </Toolbar>
             </AppBar>
         </div>

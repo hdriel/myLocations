@@ -23,10 +23,6 @@ const CategoryForm = props => {
 
     const updatedCategory = selectedCategory && new Category({doc: selectedCategory});
 
-    useEffect(() => {
-        if(!selectedCategory) history.replace(CATEGORIES);
-    }, [selectedCategory, categoryId, dispatch])
-
     let formTitle;
     let formDescriptionTitle;
     let eventHandler;
@@ -43,6 +39,8 @@ const CategoryForm = props => {
             formDescriptionTitle = `Fill form to update '${updatedCategory.name}' category`;
             eventHandler = categoryActions.updateCategory;
             break;
+
+        default: break;
     }
     const [formInput, setFormInput] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
@@ -63,7 +61,7 @@ const CategoryForm = props => {
         if(eventHandler){
             updatedCategory.name = formInput.name;
             dispatch(eventHandler(updatedCategory));
-            categoryActions.selectCategory(null);
+            dispatch(categoryActions.selectCategory(null));
             dispatch(settingsActions.updateSelectionAction({
                 selectedAction: CRUD_ACTIONS.NONE,
                 selectedCrudAction: CRUD_ACTIONS.NONE,
@@ -82,6 +80,10 @@ const CategoryForm = props => {
         history.replace(CATEGORIES);
     };
 
+    useEffect(() => {
+        if(!selectedCategory) history.replace(CATEGORIES);
+    }, [selectedCategory, categoryId, dispatch, history])
+
     return (
         <div>
             <Paper className={classes.root}>
@@ -90,27 +92,29 @@ const CategoryForm = props => {
 
                 <form onSubmit={submitHandler}>
                     <TextField
+                        variant="outlined"
                         label="Name"
                         id="margin-normal"
                         name="name"
                         defaultValue={formInput.name}
                         required={true}
                         className={classes.textField}
-                        helperText="Enter your category name"
                         onChange={handleInput}
                     />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                    >Save</Button>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.button}
-                        onClick={cancelHandler}
-                    >Cancel</Button>
+                    <div className='category-form-row-container'>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                        >Save</Button>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            className={classes.button}
+                            onClick={cancelHandler}
+                        >Cancel</Button>
+                    </div>
                 </form>
             </Paper>
         </div>

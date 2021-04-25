@@ -1,6 +1,6 @@
 import './index.scss';
 import React from 'react';
-import CategoryList from '../../components/CategoryList';
+import CategoryList from '../../components/categoryList';
 
 const Categories = props => {
   return (

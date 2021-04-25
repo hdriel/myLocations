@@ -1,0 +1,28 @@
+.location-item-card {
+  &.selected{
+    background-color: lighten(#2f5a12, 45%);
+  }
+
+  margin: 10px 0;
+
+  .location-item-card-content {
+    .location-icon{
+      padding: 30px;
+    }
+
+    .location-details{
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin-left: 20px;
+    }
+
+    div{
+      justify-content: space-between;
+      align-items: center;
+
+      .location-title {
+        font-weight: bold;
+      }
+    }
+  }
+}

@@ -39,7 +39,7 @@ const stateManagement = (state = initialState, action) => {
                 }
             }
 
-            updatedCategory.updateCategoryFromObj(category);
+            updatedCategory.updateFromObj(category);
 
             return {
                 ...state,
@@ -111,7 +111,7 @@ const stateManagement = (state = initialState, action) => {
             }
 
         case RESTORE_FROM_PERSIST_DATA:
-            let { categoryList, selectedCategory } = state;
+            let { categoryList } = state;
             if(!categoryList.length){
                 return state;
             }

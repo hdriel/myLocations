@@ -3,23 +3,27 @@ import React , {useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import {useHistory} from "react-router-dom";
 import {CATEGORIES} from "../index";
+import LocationList from "../../components/locationList";
 
 const Locations = props => {
   const history = useHistory();
 
-  const { locationList, selectedCategory } = useSelector(state => ({
-    locationList: state.location?.locationList ?? [],
+  const { selectedCategory } = useSelector(state => ({
     selectedCategory: state.category?.selectedCategory,
   }));
 
   useEffect(() => {
     if(!selectedCategory){
-      history.push(CATEGORIES);
+      history.replace(CATEGORIES);
     }
-  }, [])
+  }, [selectedCategory, history])
 
   return (
-    <div> {JSON.stringify(locationList)} </div>
+      <div className='vertical-center'>
+        <div className='location-table-container'>
+          <LocationList/>
+        </div>
+      </div>
   );
 };
 

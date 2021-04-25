@@ -4,10 +4,8 @@ import {
 } from '../actions/settings';
 
 const initialState = {
-    title: 'Category List',
     searchValue: '',
     selectedAction: undefined,
-    selectedSection: 'CATEGORY',
     selectedCrudAction: '',
 };
 
