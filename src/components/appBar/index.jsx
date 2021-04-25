@@ -46,7 +46,8 @@ const SearchAppBar = props => {
     const goBackPage = () => {
         dispatch(settingsActions.updateSearchItemValue(''));
         dispatch(categoryActions.selectCategory(null));
-        if(locationUrl.startsWith(LOCATIONS_BY_CATEGORY())){
+        const locationByCategoryUrl = LOCATIONS_BY_CATEGORY('');
+        if(locationUrl.startsWith(locationByCategoryUrl)){
             dispatch(locationActions.selectLocation(null));
         }
         dispatch(settingsActions.updateSelectionAction({
