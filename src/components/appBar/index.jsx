@@ -12,10 +12,11 @@ import useStyles from './useStyle';
 import {useHistory, useParams, useLocation} from "react-router-dom";
 import * as settingsActions from "../../store/actions/settings";
 import * as categoryActions from "../../store/actions/category";
+import * as locationActions from "../../store/actions/location";
 import {useSelector, useDispatch} from "react-redux";
 import _ from "lodash";
 import {CRUD_ACTIONS, TITLE_REPLACE_ACTION, TITLE_REPLACE_CATEGORY} from "../../utils/consts";
-import {CATEGORIES} from "../../screens";
+import {CATEGORIES, LOCATIONS_BY_CATEGORY} from "../../screens";
 
 const SearchAppBar = props => {
     const history = useHistory();
@@ -26,17 +27,6 @@ const SearchAppBar = props => {
         selectedCategory: state.category?.selectedCategory,
         selectedLocation: state.location?.selectedLocation,
     }));
-
-    // Back configuration
-    const goBackPage = () => {
-        dispatch(settingsActions.updateSearchItemValue(''));
-        dispatch(categoryActions.selectCategory(null));
-        dispatch(settingsActions.updateSelectionAction({
-            selectedAction: CRUD_ACTIONS.NONE,
-            selectedCrudAction: CRUD_ACTIONS.NONE,
-        }));
-        history.goBack();
-    }
 
     const { pathname } = useLocation();
     const locationUrl = pathname.replace('^/', '');
@@ -51,6 +41,21 @@ const SearchAppBar = props => {
 
     title = title.replace(TITLE_REPLACE_ACTION, action);
     title = title.replace(TITLE_REPLACE_CATEGORY, selectedCategory?.name ?? '');
+
+    // Back configuration
+    const goBackPage = () => {
+        dispatch(settingsActions.updateSearchItemValue(''));
+        dispatch(categoryActions.selectCategory(null));
+        if(locationUrl.startsWith(LOCATIONS_BY_CATEGORY())){
+            dispatch(locationActions.selectLocation(null));
+        }
+        dispatch(settingsActions.updateSelectionAction({
+            selectedAction: CRUD_ACTIONS.NONE,
+            selectedCrudAction: CRUD_ACTIONS.NONE,
+        }));
+        history.goBack();
+    }
+
     // Search Configuration
     const searchItemAvailable = !!props.search && existsCategoryList;
 
