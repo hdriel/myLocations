@@ -7,7 +7,7 @@ import Locations from './locations';
 import EditLocation from './editLocation';
 import PageNotFound from './pageNotFound';
 import Screen from '../wrappers/screen';
-import {CATEGORY_SECTION, LOCATION_SECTION, TITLE_REPLACE_ACTION} from "../utils/consts";
+import {CATEGORY_SECTION, LOCATION_SECTION, TITLE_REPLACE_ACTION, TITLE_REPLACE_CATEGORY} from "../utils/consts";
 import {useSelector} from "react-redux";
 
 export const CATEGORIES = '/categories';
@@ -52,7 +52,7 @@ const Routes = props => {
             <Screen
                 search={true}
                 section={LOCATION_SECTION}
-                title='Location List'
+                title={`${TITLE_REPLACE_CATEGORY}'s Locations`}
                 allowedActions={{ create: !selectedLocation, edit: selectedLocation, delete: selectedLocation, view: selectedLocation }}
             >
                 <Locations />

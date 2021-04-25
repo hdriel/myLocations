@@ -13,7 +13,7 @@ import * as settingsActions from "../../store/actions/settings";
 import * as categoryActions from "../../store/actions/category";
 import {useSelector, useDispatch} from "react-redux";
 import _ from "lodash";
-import {CRUD_ACTIONS, TITLE_REPLACE_ACTION} from "../../utils/consts";
+import {CRUD_ACTIONS, TITLE_REPLACE_ACTION, TITLE_REPLACE_CATEGORY} from "../../utils/consts";
 import {CATEGORIES} from "../../screens";
 
 
@@ -27,17 +27,7 @@ const SearchAppBar = props => {
         selectedLocation: state.location?.selectedLocation,
     }));
 
-    let { title = '*' } = props;
-    const { categoryId, locationId } = useParams();
-    // console.table({categoryId, locationId});
-    const action = (locationId !== 'new' && selectedLocation) || (categoryId !== 'new' && selectedCategory)
-        ? 'Edit'
-        : 'New';
-
-    title = title.replace(TITLE_REPLACE_ACTION, action);
-
-    const searchItemAvailable = !!props.search && existsCategoryList;
-
+    // Back configuration
     const goBackPage = () => {
         dispatch(settingsActions.updateSearchItemValue(''));
         dispatch(categoryActions.selectCategory(null));
@@ -48,6 +38,22 @@ const SearchAppBar = props => {
         history.goBack();
     }
 
+    const { pathname } = useLocation();
+    const locationUrl = pathname.replace('^\/', '');
+    const mainRoute = locationUrl === CATEGORIES;
+
+    // Title Configuration
+    let { title = '*' } = props;
+    const { categoryId, locationId } = useParams();
+    const action = (locationId !== 'new' && selectedLocation) || (categoryId !== 'new' && selectedCategory)
+        ? 'Edit'
+        : 'New';
+
+    title = title.replace(TITLE_REPLACE_ACTION, action);
+    title = title.replace(TITLE_REPLACE_CATEGORY, selectedCategory?.name ?? '');
+    // Search Configuration
+    const searchItemAvailable = !!props.search && existsCategoryList;
+
     const [reload, setReload] = useState(false);
     const callApi = (event) => {
         const { target: { value } } = event;
@@ -57,8 +63,6 @@ const SearchAppBar = props => {
     };
     const [updateSearchValue] = useState(() => _.debounce(callApi, 1000));
 
-    const { pathname } = useLocation();
-    const mainRoute = [CATEGORIES].includes(pathname.replace('^\/', ''))
 
     return (
         <div className={classes.root}>
