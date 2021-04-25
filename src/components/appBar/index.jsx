@@ -115,6 +115,7 @@ const SearchAppBar = props => {
                         title='Press double click to clear you local storage'
                     >
                         <DeleteForeverIcon
+                            fontSize="large"
                             onDoubleClick={clearLocalStorageDataHandler}
                         />
                     </div>
