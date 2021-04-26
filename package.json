@@ -1,6 +1,8 @@
 {
   "name": "my-app",
   "version": "0.1.0",
+  "author": "Hadriel Benjo",
+  "email": "hdriel@gmail.com",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
