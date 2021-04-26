@@ -21,8 +21,11 @@
   .category-form-root {
     width: 85% !important;
 
-    .MuiInputBase-input, .MuiOutlinedInput-notchedOutline {
+    .text-field{
       width: 100% !important;
+      .MuiInputBase-input, .MuiOutlinedInput-notchedOutline {
+        width: 95% !important;
+      }
     }
   }
 }

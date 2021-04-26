@@ -1,0 +1,10 @@
+
+@media screen and (max-width: 600px) {
+  .MuiToolbar-root {
+    button:first-child{
+      margin: 0 auto 0 0;
+    }
+
+    justify-content: flex-end;
+  }
+}
