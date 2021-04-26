@@ -130,7 +130,7 @@ const stateManagement = (state = initialState, action) => {
             };
 
         default:
-            console.log(`FIRED DEFAULT CATEGORY REDUCER: ${action.type}`);
+            // console.log(`FIRED DEFAULT CATEGORY REDUCER: ${action.type}`);
             return state;
     }
 }

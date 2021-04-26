@@ -27,7 +27,7 @@ const stateManagement = (state = initialState, action) => {
             }
 
         default:
-            console.log(`FIRED DEFAULT SETTINGS REDUCER: ${action.type}`);
+            // console.log(`FIRED DEFAULT SETTINGS REDUCER: ${action.type}`);
             return state;
     }
 }

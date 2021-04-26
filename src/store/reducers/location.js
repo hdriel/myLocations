@@ -144,7 +144,7 @@ const stateManagement = (state = initialState, action) => {
             };
 
          default:
-             console.log(`FIRED DEFAULT LOCATION REDUCER: ${action.type}`);
+             // console.log(`FIRED DEFAULT LOCATION REDUCER: ${action.type}`);
              return state;
     }
 }
