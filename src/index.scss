@@ -19,6 +19,12 @@ code {
   justify-content: center;
 }
 
+.horizontal-center{
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
 .flex-row{
   display: flex;
   flex-direction: row;
@@ -27,4 +33,20 @@ code {
 .flex-col{
   display: flex;
   flex-direction: column;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+@media screen and (max-width: 992px) {
+  body {
+    // background-color: blue;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    // background-color: olive;
+  }
 }

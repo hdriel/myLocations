@@ -4,6 +4,7 @@ export default makeStyles({
     root: {
         borderRadius: '10px',
         width: '700px',
+        maxWidth: '700px',
         marginTop: '20px',
         paddingTop: '10px'
     },

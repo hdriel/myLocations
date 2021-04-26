@@ -86,7 +86,7 @@ const LocationForm = props => {
                 selectedAction: CRUD_ACTIONS.NONE,
                 selectedCrudAction: CRUD_ACTIONS.NONE,
             }));
-            history.goBack();
+            history.replace(LOCATIONS_BY_CATEGORY(selectedCategoryId));
         }
     };
 
@@ -97,11 +97,11 @@ const LocationForm = props => {
             selectedAction: CRUD_ACTIONS.NONE,
             selectedCrudAction: CRUD_ACTIONS.NONE,
         }));
-        history.goBack();
+        history.replace(LOCATIONS_BY_CATEGORY(selectedCategoryId));
     };
 
     useEffect(() => {
-        if(!selectedLocation || !locationId){
+        if(!selectedLocation && !locationId){
             history.replace(selectedCategory
                 ? CATEGORIES
                 : LOCATIONS_BY_CATEGORY(selectedCategoryId)
@@ -110,99 +110,97 @@ const LocationForm = props => {
     }, [selectedLocation, selectedCategoryId, locationId, selectedCategory, dispatch, history])
 
     return (
-        <div>
-            <Paper className={classes.root}>
-                <Typography variant="h5" component="h3"> { formTitle } </Typography>
-                <Typography component="p"> { formDescriptionTitle } </Typography>
+        <Paper className={classes.root + ' location-form-root'}>
+            <Typography variant="h5" component="h3"> { formTitle } </Typography>
+            <Typography component="p"> { formDescriptionTitle } </Typography>
 
-                <form onSubmit={submitHandler}>
+            <form onSubmit={submitHandler}>
 
+                <TextField
+                    variant='outlined'
+                    label="Category"
+                    id="margin-normal"
+                    name="category"
+                    defaultValue={formInput.category}
+                    required={true}
+                    disabled={true}
+                    className={classes.textField + ' text-field'}
+                />
+
+                <TextField
+                    variant='outlined'
+                    label="Name"
+                    id="margin-normal"
+                    name="name"
+                    defaultValue={formInput.name}
+                    required={true}
+                    disabled={!editMode}
+                    className={classes.textField + ' text-field'}
+                    onChange={handleInput}
+                />
+
+
+                <TextField
+                    variant='outlined'
+                    label="Address"
+                    id="margin-normal"
+                    name="address"
+                    defaultValue={formInput.address}
+                    required={true}
+                    disabled={!editMode}
+                    className={classes.textField + ' text-field'}
+                    onChange={handleInput}
+                />
+
+                <div className={classes.row + ' form-row-container'}>
                     <TextField
                         variant='outlined'
-                        label="Category"
+                        label="Coordinates.latitude"
                         id="margin-normal"
-                        name="category"
-                        defaultValue={formInput.category}
-                        required={true}
-                        disabled={true}
-                        className={classes.textField}
-                    />
-
-                    <TextField
-                        variant='outlined'
-                        label="Name"
-                        id="margin-normal"
-                        name="name"
-                        defaultValue={formInput.name}
+                        name="latitude"
+                        defaultValue={formInput.latitude}
                         required={true}
                         disabled={!editMode}
-                        className={classes.textField}
+                        className={classes.textFieldRow}
+                        fullWidth={true}
                         onChange={handleInput}
                     />
 
-
                     <TextField
                         variant='outlined'
-                        label="Address"
+                        label="Coordinates.longitude"
                         id="margin-normal"
-                        name="address"
-                        defaultValue={formInput.address}
+                        name="longitude"
+                        defaultValue={formInput.longitude}
                         required={true}
                         disabled={!editMode}
-                        className={classes.textField}
+                        className={classes.textFieldRow}
+                        fullWidth={true}
                         onChange={handleInput}
                     />
+                </div>
 
-                    <div className={classes.row + ' form-row-container'}>
-                        <TextField
-                            variant='outlined'
-                            label="Coordinates.latitude"
-                            id="margin-normal"
-                            name="latitude"
-                            defaultValue={formInput.latitude}
-                            required={true}
-                            disabled={!editMode}
-                            className={classes.textFieldRow}
-                            fullWidth={true}
-                            onChange={handleInput}
-                        />
+                {
+                    editMode && (
+                        <div className={classes.row + ' location-form-row-container'}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                className={classes.button}
+                            >Save</Button>
 
-                        <TextField
-                            variant='outlined'
-                            label="Coordinates.longitude"
-                            id="margin-normal"
-                            name="longitude"
-                            defaultValue={formInput.longitude}
-                            required={true}
-                            disabled={!editMode}
-                            className={classes.textFieldRow}
-                            fullWidth={true}
-                            onChange={handleInput}
-                        />
-                    </div>
-
-                    {
-                        editMode && (
-                            <div className={classes.row + ' location-form-row-container'}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.button}
-                                >Save</Button>
-
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    className={classes.button}
-                                    onClick={cancelHandler}
-                                >Cancel</Button>
-                            </div>
-                        )
-                    }
-                </form>
-            </Paper>
-        </div>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                className={classes.button}
+                                onClick={cancelHandler}
+                            >Cancel</Button>
+                        </div>
+                    )
+                }
+            </form>
+        </Paper>
     );
 }
 export default LocationForm;

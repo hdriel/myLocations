@@ -23,7 +23,7 @@ const CategoryItemRender = (props) => {
     const isSelectedClass = isSelected ? 'selected' : '';
 
     return (
-        <Card className={ 'category-item-card ' + isSelectedClass}>
+        <Card className={ 'category-item-card ' + isSelectedClass} onClick={onSelectHandler}>
             <CardContent className='category-item-card-content flex-row'>
                 <Checkbox
                     checked={isSelected}

@@ -11,3 +11,26 @@
     flex: 1
   }
 }
+
+.category-form-root {
+  max-width: 670px;
+  width: min-content !important;
+}
+
+@media screen and (max-width: 992px) {
+  .category-form-root {
+    width: 85% !important;
+
+    .MuiInputBase-input, .MuiOutlinedInput-notchedOutline {
+      width: 100% !important;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .category-form-root {
+    .MuiInputBase-input, .MuiOutlinedInput-notchedOutline {
+      width: 90% !important;
+    }
+  }
+}

@@ -1,14 +1,15 @@
 .location-item-card {
-  &.selected{
-    background-color: lighten(#2f5a12, 45%);
-  }
-
+  width: inherit;
   cursor: pointer;
   margin: 10px 0;
 
   .location-item-card-content {
+    position: relative;
+
     .location-icon{
       padding: 30px;
+      position:absolute;
+      right: 1%;
     }
 
     .location-details{
@@ -18,12 +19,35 @@
     }
 
     div{
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
 
+      .location-title-container.category{
+        display: none;
+      }
       .location-title {
         font-weight: bold;
       }
     }
+  }
+}
+
+@media screen and (max-width: 993px) {
+
+}
+
+@media screen and (max-width: 500px) {
+  .location-item-card {
+    &.selected {
+      background-color: lighten(#2f5a12, 45%);
+    }
+  }
+
+  .location-title-container.category{
+    display: block !important;
+  }
+
+  .location-checkbox {
+    display: none !important;
   }
 }

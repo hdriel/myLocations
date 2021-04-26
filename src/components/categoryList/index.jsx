@@ -37,12 +37,14 @@ const CategoryList = () => {
     }
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
-            {
-                categoryItemsList.map((category, k) =>
-                    <CategoryItemRender key={k} category={category} />
-                )
-            }
+        <div className='horizontal-center flex-col'>
+            <div className='horizontal-center flex-col category-list-container'>
+                {
+                    categoryItemsList.map((category, k) =>
+                        <CategoryItemRender key={k} category={category} />
+                    )
+                }
+            </div>
         </div>
     );
 }

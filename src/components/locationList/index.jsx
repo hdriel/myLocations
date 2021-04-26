@@ -36,12 +36,14 @@ const LocationList = (props) => {
     }
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div className='horizontal-center flex-col'>
+            <div className='horizontal-center flex-col location-list-container'>
             {
                 locationItemsList.map((location, k) =>
                     <LocationItemRender key={k} location={location} />
                 )
             }
+            </div>
         </div>
     );
 }

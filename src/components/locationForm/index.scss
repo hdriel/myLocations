@@ -11,3 +11,46 @@
     margin-right: -7px;
   }
 }
+
+.location-form-root {
+  max-width: 670px;
+  width: min-content !important;
+}
+
+@media screen and (max-width: 992px) {
+  .location-form-root {
+    width: 85% !important;
+
+    .MuiInputBase-input, .MuiOutlinedInput-notchedOutline {
+      width: 100% !important;
+    }
+
+    .location-form-row-container, .form-row-container {
+      width: 98%;
+    }
+
+    .form-row-container{
+      & > div {
+        &:first-child{
+          margin-right: 25px;
+        }
+        margin: 25px 10px 0 10px;
+      }
+    }
+
+    .text-field{
+      width: 100% !important;
+      .MuiInputBase-input, .MuiOutlinedInput-notchedOutline {
+        width: 95% !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .location-form-root {
+    .MuiInputBase-input, .MuiOutlinedInput-notchedOutline {
+      width: 90% !important;
+    }
+  }
+}

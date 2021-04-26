@@ -16,7 +16,7 @@ import * as locationActions from "../../store/actions/location";
 import {useSelector, useDispatch} from "react-redux";
 import _ from "lodash";
 import {CRUD_ACTIONS, TITLE_REPLACE_ACTION, TITLE_REPLACE_CATEGORY} from "../../utils/consts";
-import {CATEGORIES, LOCATIONS_BY_CATEGORY} from "../../screens";
+import {CATEGORIES, EDIT_CATEGORY, EDIT_LOCATION, LOCATIONS_BY_CATEGORY} from "../../screens";
 
 const SearchAppBar = props => {
     const history = useHistory();
@@ -45,16 +45,33 @@ const SearchAppBar = props => {
     // Back configuration
     const goBackPage = () => {
         dispatch(settingsActions.updateSearchItemValue(''));
-        dispatch(categoryActions.selectCategory(null));
+
         const locationByCategoryUrl = LOCATIONS_BY_CATEGORY('');
-        if(locationUrl.startsWith(locationByCategoryUrl)){
+        const locationFormUrl = EDIT_LOCATION('');
+        const categoryFormUrl = EDIT_CATEGORY('');
+
+        const isCategoryFormPage = locationUrl.startsWith(categoryFormUrl)
+        const isLocationListPage = locationUrl.startsWith(locationByCategoryUrl)
+        const isLocationFormPage = locationFormUrl.startsWith(locationFormUrl)
+        if(isLocationListPage || locationFormUrl.startsWith(locationFormUrl)){
             dispatch(locationActions.selectLocation(null));
         }
+        else {
+            dispatch(categoryActions.selectCategory(null));
+        }
+
         dispatch(settingsActions.updateSelectionAction({
             selectedAction: CRUD_ACTIONS.NONE,
             selectedCrudAction: CRUD_ACTIONS.NONE,
         }));
-        history.goBack();
+
+        switch (true){
+            case mainRoute: history.replace(CATEGORIES); break;
+            case isLocationListPage: history.replace(CATEGORIES); break;
+            case isLocationFormPage: history.replace(LOCATIONS_BY_CATEGORY(selectedLocation?.id)); break;
+            case isCategoryFormPage: history.replace(CATEGORIES); break;
+            default: history.goBack(); break;
+        }
     }
 
     // Search Configuration

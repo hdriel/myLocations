@@ -119,14 +119,14 @@ const ToolbarActions = props => {
     const deleteSelectedStyle = selectedCrudAction === CRUD_ACTIONS.DELETE ? 'contained' : 'outlined';
 
     return (
-        <Card className={classes.root}>
-            <CardContent>
-                <span className={classes.title}>Available Actions: </span>
+        <Card className={classes.root + ' toolbar-root'}>
+            <CardContent className='toolbar-content'>
+                <span className={classes.title + ' toolbar-title'}>Available Actions: </span>
 
                 <Button
                     variant={createSelectedStyle}
                     color="default"
-                    className={classes.button}
+                    className={classes.button + ' toolbar-button'}
                     startIcon={<AddCircleOutlineIcon />}
                     disabled={!allowedCreateActions}
                     onClick={createHandler}
@@ -135,7 +135,7 @@ const ToolbarActions = props => {
                 <Button
                     variant={viewSelectedStyle}
                     color="default"
-                    className={classes.button}
+                    className={classes.button + ' toolbar-button'}
                     startIcon={<ImportContactsIcon />}
                     onClick={viewHandler}
                     disabled={!allowedViewActions}
@@ -144,7 +144,7 @@ const ToolbarActions = props => {
                 <Button
                     variant={editSelectedStyle}
                     color="default"
-                    className={classes.button}
+                    className={classes.button + ' toolbar-button'}
                     startIcon={<EditIcon />}
                     onClick={editHandler}
                     disabled={!allowedUpdateActions}
@@ -153,7 +153,7 @@ const ToolbarActions = props => {
                 <Button
                     variant={deleteSelectedStyle}
                     color="default"
-                    className={classes.button}
+                    className={classes.button + ' toolbar-button'}
                     startIcon={<DeleteIcon />}
                     onClick={deleteHandler}
                     disabled={!allowedDeleteActions}

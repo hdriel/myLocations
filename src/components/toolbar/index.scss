@@ -1,0 +1,39 @@
+@media screen and (max-width: 992px) {
+  .toolbar-root {
+    width: 90% !important;
+  }
+  .toolbar-content{
+    display: flex;
+    button {
+      flex: 1 1 auto;
+      flex-wrap: wrap;
+    }
+  }
+  .toolbar-title {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .toolbar-root {
+    width: 90% !important;
+  }
+  .toolbar-content{
+    display: flex;
+    flex-wrap: wrap;
+
+    button {
+      flex: 1 1 auto;
+      flex-wrap: wrap;
+      width: 33%;
+      margin: 10px 5px;
+    }
+  }
+  .toolbar-button {
+    span {
+      span:last-child{
+        display: block;
+      }
+    }
+  }
+}

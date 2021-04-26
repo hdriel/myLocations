@@ -85,39 +85,37 @@ const CategoryForm = props => {
     }, [selectedCategory, categoryId, dispatch, history])
 
     return (
-        <div>
-            <Paper className={classes.root}>
-                <Typography variant="h5" component="h3"> { formTitle } </Typography>
-                <Typography component="p"> { formDescriptionTitle } </Typography>
+        <Paper className={classes.root + ' category-form-root'}>
+            <Typography variant="h5" component="h3"> { formTitle } </Typography>
+            <Typography component="p"> { formDescriptionTitle } </Typography>
 
-                <form onSubmit={submitHandler}>
-                    <TextField
-                        variant="outlined"
-                        label="Name"
-                        id="margin-normal"
-                        name="name"
-                        defaultValue={formInput.name}
-                        required={true}
-                        className={classes.textField}
-                        onChange={handleInput}
-                    />
-                    <div className='category-form-row-container'>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            className={classes.button}
-                        >Save</Button>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            className={classes.button}
-                            onClick={cancelHandler}
-                        >Cancel</Button>
-                    </div>
-                </form>
-            </Paper>
-        </div>
+            <form onSubmit={submitHandler}>
+                <TextField
+                    variant="outlined"
+                    label="Name"
+                    id="margin-normal"
+                    name="name"
+                    defaultValue={formInput.name}
+                    required={true}
+                    className={classes.textField}
+                    onChange={handleInput}
+                />
+                <div className='category-form-row-container'>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                    >Save</Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}
+                        onClick={cancelHandler}
+                    >Cancel</Button>
+                </div>
+            </form>
+        </Paper>
     );
 }
 export default CategoryForm;
