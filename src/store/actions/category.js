@@ -20,4 +20,5 @@ export const deleteCategory = categoryId => {
 }
 
 export const resetError = () => ({type: RESET_CATEGORY_ERROR});
+
 export const updateError = error => ({type: UPDATE_CATEGORY_ERROR, error});

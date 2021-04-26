@@ -9,6 +9,8 @@ import * as settingsActions from "../../store/actions/settings";
 import { useHistory, useParams } from "react-router-dom";
 import {CATEGORIES, LOCATIONS_BY_CATEGORY} from "../../screens";
 import {Location} from "../../models/location";
+import { Alert, AlertTitle } from '@material-ui/lab';
+import * as categoryActions from "../../store/actions/category";
 
 
 const LocationForm = props => {
@@ -16,7 +18,9 @@ const LocationForm = props => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const { locationId } = useParams();
-    const { selectedLocation, selectedCategory, selectedAction } = useSelector(state => ({
+    const { selectedLocation, selectedCategory, selectedAction, locationError, savedSuccessfully} = useSelector(state => ({
+        locationError: state.location?.error ?? '',
+        savedSuccessfully: state.location?.savedSuccessfully ?? false,
         selectedCategory: state.category?.selectedCategory,
         selectedLocation: state.location?.selectedLocation,
         selectedAction: state.settings?.selectedAction ?? CATEGORY_ACTIONS.CREATE,
@@ -40,7 +44,7 @@ const LocationForm = props => {
 
         case LOCATION_ACTIONS.UPDATE:
             formTitle = 'UPDATE LOCATION';
-            formDescriptionTitle = `Fill form to update '${selectedCategoryName}' location: '${updatedLocation.name}'`;
+            formDescriptionTitle = `Fill form to update '${selectedCategoryName}' location: '${updatedLocation?.name}'`;
             eventHandler = locationActions.updateLocation;
             break;
 
@@ -73,7 +77,7 @@ const LocationForm = props => {
 
     const submitHandler = evt => {
         evt.preventDefault();
-        if(eventHandler){
+        if(eventHandler && updatedLocation){
             updatedLocation.name = formInput.name;
             updatedLocation.categoryId = selectedCategory.id;
             updatedLocation.address = formInput.address;
@@ -81,12 +85,6 @@ const LocationForm = props => {
             updatedLocation.coordinates.longitude = formInput.longitude;
 
             dispatch(eventHandler(updatedLocation));
-            dispatch(locationActions.selectLocation(null));
-            dispatch(settingsActions.updateSelectionAction({
-                selectedAction: CRUD_ACTIONS.NONE,
-                selectedCrudAction: CRUD_ACTIONS.NONE,
-            }));
-            history.replace(LOCATIONS_BY_CATEGORY(selectedCategoryId));
         }
     };
 
@@ -107,7 +105,27 @@ const LocationForm = props => {
                 : LOCATIONS_BY_CATEGORY(selectedCategoryId)
             );
         }
-    }, [selectedLocation, selectedCategoryId, locationId, selectedCategory, dispatch, history])
+    }, [selectedLocation, selectedCategoryId, locationId, selectedCategory, history])
+
+    useEffect(() => {
+        let timeoutId;
+        if(locationError){
+            timeoutId = setTimeout(() => dispatch(locationActions.resetError()), 5 * 1000);
+        }
+
+        return () => timeoutId && clearTimeout(timeoutId);
+    }, [savedSuccessfully, dispatch, locationError]);
+
+    useEffect(() => {
+        if(savedSuccessfully){
+            dispatch(locationActions.selectLocation(null));
+            dispatch(settingsActions.updateSelectionAction({
+                selectedAction: CRUD_ACTIONS.NONE,
+                selectedCrudAction: CRUD_ACTIONS.NONE,
+            }));
+            history.replace(LOCATIONS_BY_CATEGORY(selectedCategoryId));
+        }
+    }, [savedSuccessfully]);
 
     return (
         <Paper className={classes.root + ' location-form-root'}>
@@ -179,6 +197,17 @@ const LocationForm = props => {
                         onChange={handleInput}
                     />
                 </div>
+
+                {
+                    locationError && (
+                        <div className={classes.alert}>
+                            <Alert severity="error">
+                                <AlertTitle className={classes.alertTitle}>Error</AlertTitle>
+                                {locationError}
+                            </Alert>
+                        </div>
+                    )
+                }
 
                 {
                     editMode && (

@@ -14,6 +14,7 @@ const initialState = {
     locationList: [],
     selectedLocation: undefined,
     error: '',
+    savedSuccessfully: false,
 };
 
 const stateManagement = (state = initialState, action) => {
@@ -40,6 +41,7 @@ const stateManagement = (state = initialState, action) => {
                 return {
                     ...state,
                     error: `Location name ${location.name} is already taken`,
+                    savedSuccessfully: false,
                 }
             }
 
@@ -50,6 +52,7 @@ const stateManagement = (state = initialState, action) => {
                 locationList: updatedLocationList,
                 selectedLocation: null,
                 error: '',
+                savedSuccessfully: true,
             };
         }
 
@@ -72,6 +75,7 @@ const stateManagement = (state = initialState, action) => {
                 return {
                     ...state,
                     error: `Location name ${location.name} is already taken`,
+                    savedSuccessfully: false,
                 }
             }
 
@@ -81,6 +85,7 @@ const stateManagement = (state = initialState, action) => {
                 ...state,
                 locationList: updatedLocationList,
                 selectedLocation: null,
+                savedSuccessfully: true,
             }
         }
 
@@ -92,6 +97,7 @@ const stateManagement = (state = initialState, action) => {
                 ...state,
                 locationList,
                 selectedLocation: null,
+                savedSuccessfully: true,
             }
         }
 
@@ -102,7 +108,8 @@ const stateManagement = (state = initialState, action) => {
 
             return {
                 ...state,
-                locationList
+                locationList,
+                savedSuccessfully: true,
             }
         }
 
@@ -122,6 +129,7 @@ const stateManagement = (state = initialState, action) => {
             return {
                 ...state,
                 error,
+                savedSuccessfully: false,
             }
 
         case RESTORE_FROM_PERSIST_DATA:
@@ -141,6 +149,7 @@ const stateManagement = (state = initialState, action) => {
                 ...state,
                 locationList,
                 selectedLocation: null,
+                savedSuccessfully: false,
             };
 
          default:
