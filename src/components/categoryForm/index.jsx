@@ -9,15 +9,17 @@ import * as settingsActions from "../../store/actions/settings";
 import { useHistory, useParams } from "react-router-dom";
 import {CATEGORIES} from "../../screens";
 import {Category} from "../../models/category";
-
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const CategoryForm = props => {
     const history = useHistory();
     const classes = useStyle();
     const dispatch = useDispatch();
     const { categoryId } = useParams();
-    const { selectedCategory, selectedAction } = useSelector(state => ({
-        selectedCategory: state.category?.selectedCategory,
+    const { selectedCategory, selectedAction, categoryError, savedSuccessfully } = useSelector(state => ({
+        categoryError: state.category?.error ?? '',
+        savedSuccessfully: state.category?.savedSuccessfully ?? false,
+        selectedCategory: state.category?.selectedCategory ?? null,
         selectedAction: state.settings?.selectedAction ?? CATEGORY_ACTIONS.CREATE,
     }));
 
@@ -36,7 +38,7 @@ const CategoryForm = props => {
 
         case CATEGORY_ACTIONS.UPDATE:
             formTitle = 'UPDATE CATEGORY';
-            formDescriptionTitle = `Fill form to update '${updatedCategory.name}' category`;
+            formDescriptionTitle = `Fill form to update '${updatedCategory?.name}' category`;
             eventHandler = categoryActions.updateCategory;
             break;
 
@@ -61,12 +63,6 @@ const CategoryForm = props => {
         if(eventHandler){
             updatedCategory.name = formInput.name;
             dispatch(eventHandler(updatedCategory));
-            dispatch(categoryActions.selectCategory(null));
-            dispatch(settingsActions.updateSelectionAction({
-                selectedAction: CRUD_ACTIONS.NONE,
-                selectedCrudAction: CRUD_ACTIONS.NONE,
-            }));
-            history.replace(CATEGORIES);
         }
     };
 
@@ -81,8 +77,28 @@ const CategoryForm = props => {
     };
 
     useEffect(() => {
+        let timeoutId;
+        if(categoryError){
+            timeoutId = setTimeout(() => dispatch(categoryActions.resetError()), 5 * 1000);
+        }
+
+        return () => timeoutId && clearTimeout(timeoutId);
+    }, [savedSuccessfully, dispatch, categoryError]);
+
+    useEffect(() => {
+        if(savedSuccessfully){
+            dispatch(categoryActions.selectCategory(null));
+            dispatch(settingsActions.updateSelectionAction({
+                selectedAction: CRUD_ACTIONS.NONE,
+                selectedCrudAction: CRUD_ACTIONS.NONE,
+            }));
+            history.replace(CATEGORIES);
+        }
+    }, [savedSuccessfully]);
+
+    useEffect(() => {
         if(!selectedCategory) history.replace(CATEGORIES);
-    }, [selectedCategory, categoryId, dispatch, history])
+    }, [selectedCategory, history])
 
     return (
         <Paper className={classes.root + ' category-form-root'}>
@@ -100,6 +116,18 @@ const CategoryForm = props => {
                     className={classes.textField}
                     onChange={handleInput}
                 />
+
+                {
+                    categoryError && (
+                        <div className={classes.alert}>
+                            <Alert severity="error">
+                                <AlertTitle className={classes.alertTitle}>Error</AlertTitle>
+                                {categoryError}
+                            </Alert>
+                        </div>
+                    )
+                }
+
                 <div className='category-form-row-container'>
                     <Button
                         type="submit"

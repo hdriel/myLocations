@@ -12,6 +12,8 @@ import {RESTORE_FROM_PERSIST_DATA} from "../../utils/consts";
 const initialState = {
     categoryList: [],
     selectedCategory: null,
+    error: '',
+    savedSuccessfully: false,
 };
 
 const stateManagement = (state = initialState, action) => {
@@ -36,6 +38,7 @@ const stateManagement = (state = initialState, action) => {
                 return {
                     ...state,
                     error: `Category name ${category.name} is already taken`,
+                    savedSuccessfully: false,
                 }
             }
 
@@ -46,6 +49,7 @@ const stateManagement = (state = initialState, action) => {
                 categoryList: updatedCategoryList,
                 selectedCategory: null,
                 error: '',
+                savedSuccessfully: true,
             };
         }
 
@@ -68,6 +72,7 @@ const stateManagement = (state = initialState, action) => {
                 return {
                     ...state,
                     error: `Category name ${category.name} is already taken`,
+                    savedSuccessfully: false,
                 }
             }
 
@@ -77,6 +82,8 @@ const stateManagement = (state = initialState, action) => {
                 ...state,
                 categoryList: updatedCategoryList,
                 selectedCategory: null,
+                error: '',
+                savedSuccessfully: true,
             }
 
         case DELETE_CATEGORY: {
@@ -87,6 +94,7 @@ const stateManagement = (state = initialState, action) => {
                 ...state,
                 categoryList,
                 selectedCategory: null,
+                savedSuccessfully: true,
             }
         }
 
@@ -103,11 +111,11 @@ const stateManagement = (state = initialState, action) => {
         case RESET_CATEGORY_ERROR:
         case UPDATE_CATEGORY_ERROR:
             // console.log(`FIRED: ${action.type}`);
-            debugger
-            const { error = ''} = action;
+            const { error = '' } = action;
             return {
                 ...state,
                 error,
+                savedSuccessfully: false,
             }
 
         case RESTORE_FROM_PERSIST_DATA:
@@ -127,6 +135,7 @@ const stateManagement = (state = initialState, action) => {
                 ...state,
                 categoryList,
                 selectedCategory: null,
+                savedSuccessfully: false,
             };
 
         default:
