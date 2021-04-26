@@ -16,6 +16,7 @@ const LocationList = (props) => {
     const selectedLocationId = selectedLocation?.id;
 
     const locationItemsList = locationList
+        .filter(location => location.categoryId === selectedCategory?.id)
         .map(location => {
             if(!(location instanceof Location)){
                 location = new Location({doc: location});

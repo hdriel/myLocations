@@ -30,11 +30,12 @@ const stateManagement = (state = initialState, action) => {
                 return state;
             }
 
-            // todo: check the unique location name per category
-            const isLocationNameTaken = !!updatedLocationList.find(loc =>
-                loc.id !== prevLocation.id // is not the same selected location
-                && loc.name === location.name // and his name is not already taken
-            );
+            const isLocationNameTaken = !!updatedLocationList
+                .filter(loc => loc.categoryId === location.categoryId)
+                .find(loc =>
+                    loc.id !== prevLocation.id // is not the same selected location
+                    && loc.name === location.name // and his name is not already taken
+                );
             if(isLocationNameTaken){
                 return {
                     ...state,
@@ -63,10 +64,9 @@ const stateManagement = (state = initialState, action) => {
                 return state;
             }
 
-            // todo: check the unique location name per category
-            const isLocationNameTaken = !!updatedLocationList.find(loc =>
-                loc.name === location.name // the location name is not already taken
-            );
+            const isLocationNameTaken = !!updatedLocationList
+                .filter(loc => loc.categoryId === location.categoryId)
+                .find(loc => loc.name === location.name ); // the location name is not already taken
 
             if(isLocationNameTaken){
                 return {
