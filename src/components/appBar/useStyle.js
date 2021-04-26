@@ -54,7 +54,7 @@ export default makeStyles((theme) => ({
             },
         },
     },
-    deleteCache: {
+    appBarIcon: {
         padding: theme.spacing(0, 0, 0 , 2),
-    }
+    },
 }));

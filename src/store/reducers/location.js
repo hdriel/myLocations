@@ -6,6 +6,7 @@ import {
     SELECT_LOCATION,
     DELETE_LOCATION_BY_CATEGORY,
     UPDATE_LOCATION_ERROR,
+    LOADING_LOCATION_MOCK_DATA
 } from '../actions/location';
 import {Location} from "../../models/location";
 import {RESTORE_FROM_PERSIST_DATA} from "../../utils/consts";
@@ -151,6 +152,16 @@ const stateManagement = (state = initialState, action) => {
                 selectedLocation: null,
                 savedSuccessfully: false,
             };
+
+        case LOADING_LOCATION_MOCK_DATA:
+            // console.log(`FIRED: ${action.type}`);
+            return {
+                ...state,
+                locationList: action.locationList,
+                selectedLocation: null,
+                error: '',
+                savedSuccessfully: false,
+            }
 
          default:
              // console.log(`FIRED DEFAULT LOCATION REDUCER: ${action.type}`);

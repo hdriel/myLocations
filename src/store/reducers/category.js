@@ -5,6 +5,7 @@ import {
     SELECT_CATEGORY,
     UPDATE_CATEGORY,
     UPDATE_CATEGORY_ERROR,
+    LOADING_CATEGORY_MOCK_DATA
 } from '../actions/category';
 import {Category} from "../../models/category";
 import {RESTORE_FROM_PERSIST_DATA} from "../../utils/consts";
@@ -98,7 +99,6 @@ const stateManagement = (state = initialState, action) => {
             }
         }
 
-
         case SELECT_CATEGORY:
             // console.log(`FIRED: ${action.type}`);
             return {
@@ -106,7 +106,6 @@ const stateManagement = (state = initialState, action) => {
                 selectedCategory: action.category || null,
                 error: '',
             }
-
 
         case RESET_CATEGORY_ERROR:
         case UPDATE_CATEGORY_ERROR:
@@ -137,6 +136,16 @@ const stateManagement = (state = initialState, action) => {
                 selectedCategory: null,
                 savedSuccessfully: false,
             };
+
+        case LOADING_CATEGORY_MOCK_DATA:
+            // console.log(`FIRED: ${action.type}`);
+            return {
+                ...state,
+                categoryList: action.categoryList,
+                selectedCategory: null,
+                error: '',
+                savedSuccessfully: false,
+            }
 
         default:
             // console.log(`FIRED DEFAULT CATEGORY REDUCER: ${action.type}`);

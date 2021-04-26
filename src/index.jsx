@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
+import './mock/data';
 
 ReactDOM.render(
   <React.StrictMode>

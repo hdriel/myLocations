@@ -1,6 +1,45 @@
-.location-table-container{
+.location-data-container{
   margin-top: 20px;
   min-width: 400px;
   width: inherit;
-  max-width: 700px;
+  max-width: 690px;
+  padding-right: 10px;
+}
+
+.scrollable-location {
+  height: 75vh;
+  overflow-y: auto;
+}
+
+.scrollable-location::-webkit-scrollbar {
+  width: 1em;
+}
+
+.scrollable-location::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 5px;
+}
+
+.scrollable-location::-webkit-scrollbar-thumb {
+  background-color: rgba(47, 90, 18, 0.3);;
+  outline: 1px solid slategrey;
+  border-radius: 10px;
+}
+
+.scrollable-location::-webkit-scrollbar {
+  width: 11px;
+}
+
+@media screen and (max-width: 992px) {
+  .location-data-container {
+    width: 90% !important;
+    padding-right: 0 !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .location-data-container {
+    width: 90% !important;
+    padding-right: 0 !important;
+  }
 }

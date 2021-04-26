@@ -5,6 +5,7 @@ export const DELETE_LOCATION_BY_CATEGORY = 'DELETE_LOCATION_BY_CATEGORY';
 export const SELECT_LOCATION = 'SELECT_LOCATION';
 export const RESET_LOCATION_ERROR = 'RESET_LOCATION_ERROR';
 export const UPDATE_LOCATION_ERROR = 'UPDATE_LOCATION_ERROR';
+export const LOADING_LOCATION_MOCK_DATA = 'LOADING_LOCATION_MOCK_DATA';
 
 export const createLocation = location => ({type: ADD_NEW_LOCATION, location});
 
@@ -16,4 +17,4 @@ export const deleteLocation = locationId => ({type: DELETE_LOCATION, locationId}
 
 export const resetError = locationId => ({type: RESET_LOCATION_ERROR, locationId});
 
-export const updateError = error => ({type: UPDATE_LOCATION_ERROR, error});
+export const loadingMockData = locationList => ({type: LOADING_LOCATION_MOCK_DATA, locationList});

@@ -26,7 +26,7 @@ const Locations = props => {
 
   return (
       <div className='vertical-center'>
-        <div className='location-table-container'>
+          <div className='location-data-container scrollable-location'>
           <LocationList/>
         </div>
       </div>

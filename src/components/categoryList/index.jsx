@@ -37,8 +37,8 @@ const CategoryList = () => {
     }
 
     return (
-        <div className='horizontal-center flex-col'>
-            <div className='horizontal-center flex-col category-list-container'>
+        <div className='horizontal-center flex-col category-list-container'>
+            <div className='horizontal-center flex-col category-list'>
                 {
                     categoryItemsList.map((category, k) =>
                         <CategoryItemRender key={k} category={category} />

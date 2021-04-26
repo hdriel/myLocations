@@ -17,6 +17,10 @@ import {useSelector, useDispatch} from "react-redux";
 import _ from "lodash";
 import {CRUD_ACTIONS, TITLE_REPLACE_ACTION, TITLE_REPLACE_CATEGORY} from "../../utils/consts";
 import {CATEGORIES, EDIT_CATEGORY, EDIT_LOCATION, LOCATIONS_BY_CATEGORY} from "../../screens";
+import TransformIcon from '@material-ui/icons/Transform';
+import {generateMockData} from "../../mock/data";
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 const SearchAppBar = props => {
     const history = useHistory();
@@ -90,6 +94,11 @@ const SearchAppBar = props => {
         localStorage.clear();
         window.location.reload(false);
     }
+    const fetchMockData = () => {
+        const { categoryList, locationList } = generateMockData();
+        dispatch(categoryActions.loadingMockData(categoryList));
+        dispatch(locationActions.loadingMockData(locationList));
+    }
 
     return (
         <div className={classes.root}>
@@ -128,15 +137,30 @@ const SearchAppBar = props => {
                         )
                     }
 
-                    <div
-                        className={classes.deleteCache}
-                        title='Press double click to clear you local storage'
+                    <Tooltip
+                        className={classes.tooltip}
+                        title="Press double click to clear you local storage"
+                        placement="top-start"
                     >
                         <DeleteForeverIcon
+                            className={classes.appBarIcon}
                             fontSize="large"
                             onDoubleClick={clearLocalStorageDataHandler}
                         />
-                    </div>
+                    </Tooltip>
+
+                    <Tooltip
+                        className={classes.tooltip}
+                        title='Press double click to loading mock data'
+                        placement="top-start"
+                        arrow
+                    >
+                        <TransformIcon
+                            className={classes.appBarIcon}
+                            fontSize="large"
+                            onDoubleClick={fetchMockData}
+                        />
+                    </Tooltip>
                 </Toolbar>
             </AppBar>
         </div>

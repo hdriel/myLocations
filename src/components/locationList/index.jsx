@@ -37,8 +37,8 @@ const LocationList = (props) => {
     }
 
     return (
-        <div className='horizontal-center flex-col'>
-            <div className='horizontal-center flex-col location-list-container'>
+        <div className='horizontal-center flex-col location-list-container'>
+            <div className='horizontal-center flex-col location-list'>
             {
                 locationItemsList.map((location, k) =>
                     <LocationItemRender key={k} location={location} />

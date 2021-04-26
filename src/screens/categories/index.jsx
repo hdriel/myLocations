@@ -12,8 +12,8 @@ const Categories = props => {
     }, [dispatch]);
 
     return (
-        <div className='vertical-center'>
-            <div className='category-table-container'>
+        <div className='vertical-center '>
+            <div className='category-data-container scrollable-category'>
                 <CategoryList/>
             </div>
         </div>

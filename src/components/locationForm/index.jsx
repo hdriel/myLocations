@@ -10,7 +10,6 @@ import { useHistory, useParams } from "react-router-dom";
 import {CATEGORIES, LOCATIONS_BY_CATEGORY} from "../../screens";
 import {Location} from "../../models/location";
 import { Alert, AlertTitle } from '@material-ui/lab';
-import * as categoryActions from "../../store/actions/category";
 
 
 const LocationForm = props => {
@@ -125,7 +124,7 @@ const LocationForm = props => {
             }));
             history.replace(LOCATIONS_BY_CATEGORY(selectedCategoryId));
         }
-    }, [savedSuccessfully]);
+    }, [savedSuccessfully, dispatch, history, selectedCategoryId]);
 
     return (
         <Paper className={classes.root + ' location-form-root'}>

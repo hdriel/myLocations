@@ -6,7 +6,7 @@ import {CATEGORY_ACTIONS, CRUD_ACTIONS} from "../../utils/consts";
 import useStyle from "./useStyle";
 import * as categoryActions from "../../store/actions/category";
 import * as settingsActions from "../../store/actions/settings";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {CATEGORIES} from "../../screens";
 import {Category} from "../../models/category";
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -15,7 +15,6 @@ const CategoryForm = props => {
     const history = useHistory();
     const classes = useStyle();
     const dispatch = useDispatch();
-    const { categoryId } = useParams();
     const { selectedCategory, selectedAction, categoryError, savedSuccessfully } = useSelector(state => ({
         categoryError: state.category?.error ?? '',
         savedSuccessfully: state.category?.savedSuccessfully ?? false,
@@ -94,7 +93,7 @@ const CategoryForm = props => {
             }));
             history.replace(CATEGORIES);
         }
-    }, [savedSuccessfully]);
+    }, [savedSuccessfully, dispatch, history]);
 
     useEffect(() => {
         if(!selectedCategory) history.replace(CATEGORIES);
@@ -113,7 +112,7 @@ const CategoryForm = props => {
                     name="name"
                     defaultValue={formInput.name}
                     required={true}
-                    className={classes.textField}
+                    className={classes.textField + ' text-field'}
                     onChange={handleInput}
                 />
 
