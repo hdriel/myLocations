@@ -6,7 +6,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Checkbox from "@material-ui/core/Checkbox";
-import {selectLocation} from "../../store/actions/location";
 
 const LocationItemRender = (props) => {
     const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import './index.scss';
 import React, {useEffect, useReducer} from 'react';
-import { Button, TextField, Paper, Typography, Grid } from "@material-ui/core";
+import { Button, TextField, Paper, Typography } from "@material-ui/core";
 import { useSelector, useDispatch } from 'react-redux';
 import {CATEGORY_ACTIONS, CRUD_ACTIONS, LOCATION_ACTIONS} from "../../utils/consts";
 import useStyle from "./useStyle";

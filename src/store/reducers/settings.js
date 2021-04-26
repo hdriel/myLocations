@@ -12,14 +12,14 @@ const initialState = {
 const stateManagement = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_SEARCH_ITEM_VALUE:
-            console.log(`FIRED: ${action.type}`);
+            // console.log(`FIRED: ${action.type}`);
             return {
                 ...state,
                 searchValue: action.value,
             }
 
         case UPDATE_SELECTED_ACTION:
-            console.log(`FIRED: ${action.type}`);
+            // console.log(`FIRED: ${action.type}`);
             return {
                 ...state,
                 selectedAction: action.selectedAction,

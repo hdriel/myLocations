@@ -17,7 +17,7 @@ const initialState = {
 const stateManagement = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_CATEGORY: {
-            console.log(`FIRED: ${action.type}`);
+            // console.log(`FIRED: ${action.type}`);
             const updatedCategoryList = state.categoryList.map(category => new Category({doc: category}));
 
             const { category } = action;
@@ -50,7 +50,7 @@ const stateManagement = (state = initialState, action) => {
         }
 
         case ADD_NEW_CATEGORY:
-            console.log(`FIRED: ${action.type}`);
+            // console.log(`FIRED: ${action.type}`);
             const updatedCategoryList = state.categoryList.slice(0);
 
             const { category } = action;
@@ -80,7 +80,7 @@ const stateManagement = (state = initialState, action) => {
             }
 
         case DELETE_CATEGORY: {
-            console.log(`FIRED: ${action.type}`);
+            // console.log(`FIRED: ${action.type}`);
             const { categoryId } = action;
             const categoryList = state.categoryList.filter(category => category.id !== categoryId)
             return {
@@ -92,7 +92,7 @@ const stateManagement = (state = initialState, action) => {
 
 
         case SELECT_CATEGORY:
-            console.log(`FIRED: ${action.type}`);
+            // console.log(`FIRED: ${action.type}`);
             return {
                 ...state,
                 selectedCategory: action.category || null,
@@ -102,7 +102,7 @@ const stateManagement = (state = initialState, action) => {
 
         case RESET_CATEGORY_ERROR:
         case UPDATE_CATEGORY_ERROR:
-            console.log(`FIRED: ${action.type}`);
+            // console.log(`FIRED: ${action.type}`);
             debugger
             const { error = ''} = action;
             return {

@@ -8,7 +8,7 @@ import EditLocation from './editLocation';
 import PageNotFound from './pageNotFound';
 import Screen from '../wrappers/screen';
 import {
-    CATEGORY_SECTION, CRUD_ACTIONS,
+    CATEGORY_SECTION,
     LOCATION_ACTIONS,
     LOCATION_SECTION,
     TITLE_REPLACE_ACTION,
@@ -26,11 +26,10 @@ export const EDIT_LOCATION = locationId => `/location/${locationId || 'new'}`;
 export const DEFAULT_PAGE = CATEGORIES;
 
 const Routes = props => {
-  const {selectedCategory, selectedLocation, selectedAction, selectedCrudAction} = useSelector(state => ({
+  const {selectedCategory, selectedLocation, selectedAction} = useSelector(state => ({
       selectedCategory: state.category?.selectedCategory,
       selectedLocation: state.location?.selectedLocation,
       selectedAction: state.settings?.selectedAction,
-      selectedCrudAction: state.settings?.selectedCrudAction,
   }))
 
   return (
