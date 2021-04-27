@@ -9,7 +9,7 @@ import {
     LOADING_LOCATION_MOCK_DATA
 } from '../actions/location';
 import {Location} from "../../models/location";
-import {RESTORE_FROM_PERSIST_DATA} from "../../utils/consts";
+
 
 const initialState = {
     locationList: [],
@@ -132,26 +132,6 @@ const stateManagement = (state = initialState, action) => {
                 error,
                 savedSuccessfully: false,
             }
-
-        case RESTORE_FROM_PERSIST_DATA:
-            let { locationList } = state;
-            if(!locationList.length){
-                return state;
-            }
-
-            locationList = locationList.map(location => {
-                if(!(location instanceof Location)){
-                    return new Location({doc: location})
-                }
-                return location;
-            })
-
-            return {
-                ...state,
-                locationList,
-                selectedLocation: null,
-                savedSuccessfully: false,
-            };
 
         case LOADING_LOCATION_MOCK_DATA:
             // console.log(`FIRED: ${action.type}`);

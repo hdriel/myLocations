@@ -50,19 +50,13 @@ const SearchAppBar = props => {
     const goBackPage = () => {
         dispatch(settingsActions.updateSearchItemValue(''));
 
-        const locationByCategoryUrl = LOCATIONS_BY_CATEGORY('');
-        const locationFormUrl = EDIT_LOCATION('');
-        const categoryFormUrl = EDIT_CATEGORY('');
-
-        const isCategoryFormPage = locationUrl.startsWith(categoryFormUrl)
-        const isLocationListPage = locationUrl.startsWith(locationByCategoryUrl)
-        const isLocationFormPage = locationFormUrl.startsWith(locationFormUrl)
-        if(isLocationListPage || locationFormUrl.startsWith(locationFormUrl)){
-            dispatch(locationActions.selectLocation(null));
-        }
-        else {
-            dispatch(categoryActions.selectCategory(null));
-        }
+        const isCategoryFormPage = locationUrl.startsWith(EDIT_CATEGORY('').replace(/new$/, ''));
+        const isLocationListPage = locationUrl.startsWith(LOCATIONS_BY_CATEGORY(''));
+        const isLocationFormPage = locationUrl.startsWith(EDIT_LOCATION('').replace(/new$/, ''))
+        dispatch( isLocationListPage || isLocationFormPage
+            ? locationActions.selectLocation(null)
+            : categoryActions.selectCategory(null)
+        );
 
         dispatch(settingsActions.updateSelectionAction({
             selectedAction: CRUD_ACTIONS.NONE,
@@ -71,10 +65,10 @@ const SearchAppBar = props => {
 
         switch (true){
             case mainRoute: history.replace(CATEGORIES); break;
+            case isCategoryFormPage: history.replace(CATEGORIES); break;
             case isLocationListPage: history.replace(CATEGORIES); break;
             case isLocationFormPage: history.replace(LOCATIONS_BY_CATEGORY(selectedLocation?.id)); break;
-            case isCategoryFormPage: history.replace(CATEGORIES); break;
-            default: history.goBack(); break;
+            default: history.replace(CATEGORIES); break;
         }
     }
 

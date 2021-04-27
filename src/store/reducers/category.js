@@ -8,7 +8,7 @@ import {
     LOADING_CATEGORY_MOCK_DATA
 } from '../actions/category';
 import {Category} from "../../models/category";
-import {RESTORE_FROM_PERSIST_DATA} from "../../utils/consts";
+
 
 const initialState = {
     categoryList: [],
@@ -117,33 +117,13 @@ const stateManagement = (state = initialState, action) => {
                 savedSuccessfully: false,
             }
 
-        case RESTORE_FROM_PERSIST_DATA:
-            let { categoryList } = state;
-            if(!categoryList.length){
-                return state;
-            }
-
-            categoryList = categoryList.map(category => {
-                if(!(category instanceof Category)){
-                    return new Category({doc: category})
-                }
-                return category;
-            })
-
-            return {
-                ...state,
-                categoryList,
-                selectedCategory: null,
-                savedSuccessfully: false,
-            };
-
         case LOADING_CATEGORY_MOCK_DATA:
             // console.log(`FIRED: ${action.type}`);
             return {
                 ...state,
                 categoryList: action.categoryList,
-                selectedCategory: null,
                 error: '',
+                selectedCategory: null,
                 savedSuccessfully: false,
             }
 

@@ -1,5 +1,5 @@
 import './index.scss';
-import React, {useEffect, useReducer} from 'react';
+import React, {useCallback, useEffect, useReducer} from 'react';
 import { Button, TextField, Paper, Typography } from "@material-ui/core";
 import { useSelector, useDispatch } from 'react-redux';
 import {CATEGORY_ACTIONS, CRUD_ACTIONS} from "../../utils/consts";
@@ -65,14 +65,18 @@ const CategoryForm = props => {
         }
     };
 
-    const cancelHandler = evt => {
-        evt.preventDefault();
+    const goBackPage = useCallback(() => {
         dispatch(categoryActions.selectCategory(null));
         dispatch(settingsActions.updateSelectionAction({
             selectedAction: CRUD_ACTIONS.NONE,
             selectedCrudAction: CRUD_ACTIONS.NONE,
         }));
         history.replace(CATEGORIES);
+    }, [dispatch, history]);
+
+    const cancelHandler = evt => {
+        evt && evt.preventDefault();
+        goBackPage();
     };
 
     useEffect(() => {
@@ -86,18 +90,24 @@ const CategoryForm = props => {
 
     useEffect(() => {
         if(savedSuccessfully){
-            dispatch(categoryActions.selectCategory(null));
-            dispatch(settingsActions.updateSelectionAction({
-                selectedAction: CRUD_ACTIONS.NONE,
-                selectedCrudAction: CRUD_ACTIONS.NONE,
-            }));
-            history.replace(CATEGORIES);
+            goBackPage();
         }
-    }, [savedSuccessfully, dispatch, history]);
+    }, [savedSuccessfully, goBackPage]);
 
     useEffect(() => {
-        if(!selectedCategory) history.replace(CATEGORIES);
-    }, [selectedCategory, history])
+        window.onbeforeunload = function() {
+            goBackPage();
+            return true;
+        };
+
+        if(!selectedCategory){
+            goBackPage();
+        }
+
+        return () => {
+            window.onbeforeunload = null;
+        };
+    }, [history, dispatch, selectedCategory, goBackPage])
 
     return (
         <Paper className={classes.root + ' category-form-root'}>

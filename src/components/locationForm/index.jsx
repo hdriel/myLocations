@@ -1,12 +1,12 @@
 import './index.scss';
-import React, {useEffect, useReducer} from 'react';
+import React, {useCallback, useEffect, useReducer} from 'react';
 import { Button, TextField, Paper, Typography } from "@material-ui/core";
 import { useSelector, useDispatch } from 'react-redux';
 import {CATEGORY_ACTIONS, CRUD_ACTIONS, LOCATION_ACTIONS} from "../../utils/consts";
 import useStyle from "./useStyle";
 import * as locationActions from "../../store/actions/location";
 import * as settingsActions from "../../store/actions/settings";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {CATEGORIES, LOCATIONS_BY_CATEGORY} from "../../screens";
 import {Location} from "../../models/location";
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -16,12 +16,17 @@ const LocationForm = props => {
     const history = useHistory();
     const classes = useStyle();
     const dispatch = useDispatch();
-    const { locationId } = useParams();
-    const { selectedLocation, selectedCategory, selectedAction, locationError, savedSuccessfully} = useSelector(state => ({
+    const {
+        selectedLocation,
+        selectedCategory,
+        selectedAction,
+        locationError,
+        savedSuccessfully,
+    } = useSelector(state => ({
         locationError: state.location?.error ?? '',
         savedSuccessfully: state.location?.savedSuccessfully ?? false,
-        selectedCategory: state.category?.selectedCategory,
-        selectedLocation: state.location?.selectedLocation,
+        selectedLocation: state.location?.selectedLocation ?? null,
+        selectedCategory: state.category?.selectedCategory ?? null,
         selectedAction: state.settings?.selectedAction ?? CATEGORY_ACTIONS.CREATE,
     }));
 
@@ -69,7 +74,6 @@ const LocationForm = props => {
     const handleInput = evt => {
         const name = evt.target.name;
         const newValue = evt.target.value;
-        console.log({ [name]: newValue });
         setFormInput({ [name]: newValue });
     };
 
@@ -87,24 +91,23 @@ const LocationForm = props => {
         }
     };
 
-    const cancelHandler = evt => {
-        evt.preventDefault();
+    const goBackPage = useCallback(() => {
         dispatch(locationActions.selectLocation(null));
         dispatch(settingsActions.updateSelectionAction({
             selectedAction: CRUD_ACTIONS.NONE,
             selectedCrudAction: CRUD_ACTIONS.NONE,
         }));
-        history.replace(LOCATIONS_BY_CATEGORY(selectedCategoryId));
-    };
 
-    useEffect(() => {
-        if(!selectedLocation && !locationId){
-            history.replace(selectedCategory
-                ? CATEGORIES
-                : LOCATIONS_BY_CATEGORY(selectedCategoryId)
-            );
-        }
-    }, [selectedLocation, selectedCategoryId, locationId, selectedCategory, history])
+        history.replace(selectedCategoryId
+            ? LOCATIONS_BY_CATEGORY(selectedCategoryId)
+            : CATEGORIES
+        );
+    }, [dispatch, history, selectedCategoryId]);
+
+    const cancelHandler = evt => {
+        evt && evt.preventDefault();
+        goBackPage();
+    };
 
     useEffect(() => {
         let timeoutId;
@@ -117,14 +120,27 @@ const LocationForm = props => {
 
     useEffect(() => {
         if(savedSuccessfully){
-            dispatch(locationActions.selectLocation(null));
-            dispatch(settingsActions.updateSelectionAction({
-                selectedAction: CRUD_ACTIONS.NONE,
-                selectedCrudAction: CRUD_ACTIONS.NONE,
-            }));
-            history.replace(LOCATIONS_BY_CATEGORY(selectedCategoryId));
+            goBackPage();
         }
-    }, [savedSuccessfully, dispatch, history, selectedCategoryId]);
+    }, [goBackPage, savedSuccessfully]);
+
+    useEffect(() => {
+        window.onbeforeunload = function() {
+            goBackPage();
+            return true;
+        };
+
+        if(!selectedLocation){
+            history.replace(selectedCategoryId
+                ? LOCATIONS_BY_CATEGORY(selectedCategoryId)
+                : CATEGORIES
+            );
+        }
+
+        return () => {
+            window.onbeforeunload = null;
+        };
+    }, [history, dispatch, selectedLocation, selectedCategory, selectedCategoryId, goBackPage])
 
     return (
         <Paper className={classes.root + ' location-form-root'}>

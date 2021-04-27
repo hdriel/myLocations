@@ -11,8 +11,6 @@ export function generateMockData() {
         categoryList.push(new Category({id: uid(), name: faker.random.word(2)}));
     });
 
-    console.log(categoryList);
-
     const locationList = [];
     categoryList.forEach(category => {
         const locationLen = faker.random.number(20);
@@ -32,6 +30,5 @@ export function generateMockData() {
         });
     })
 
-    console.log(locationList);
     return { categoryList, locationList }
 }

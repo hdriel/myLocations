@@ -7,8 +7,6 @@ import Card from "@material-ui/core/Card";
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import Toolbar from "@material-ui/core/Toolbar";
 
 const LocationItemRender = (props) => {
     const dispatch = useDispatch();
