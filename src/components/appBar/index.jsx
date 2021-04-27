@@ -19,7 +19,7 @@ import {CRUD_ACTIONS, TITLE_REPLACE_ACTION, TITLE_REPLACE_CATEGORY} from "../../
 import {CATEGORIES, EDIT_CATEGORY, EDIT_LOCATION, LOCATIONS_BY_CATEGORY} from "../../screens";
 import TransformIcon from '@material-ui/icons/Transform';
 import {generateMockData} from "../../mock/data";
-import Tooltip from '@material-ui/core/Tooltip';
+import { Tooltip } from '@material-ui/core';
 
 
 const SearchAppBar = props => {
